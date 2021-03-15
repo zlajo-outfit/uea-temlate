@@ -1,0 +1,2420 @@
+<!DOCTYPE html>
+<html data-sign="OSR" async data-layout="{{UEA_layout--fs}}">
+  <head>
+    <title>Template title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="css/minireset.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+    <style>
+      @import url('https://outfit-assets-production.s3.amazonaws.com/fonts/BrandonText/stylesheet.css');
+
+      :root {
+        --white: {{{account.colors.white}}};
+        --black: {{{account.colors.black}}};
+
+        --green: {{{account.colors.uea-green-rgb}}};
+        --purple: {{{account.colors.uea-purple-rgb}}};
+        --orange: {{{account.colors.uea-orange-rgb}}};
+        --cyan: {{{account.colors.uea-cyan-rgb}}};
+        --magenta: {{{account.colors.uea-magenta-rgb}}};
+
+        --grey: #221E1F;  /*This color is used for text on info and back page for content text - asked to put this color after testing*/
+        --red: #ff0000; /*Used for errors - popups - text and borders*/
+        --brown: #241f20; /*Used for contact us section background on back page - inspected from placeholder as there is no color in brand library*/
+      }
+
+      .green { --dynamic-colour: var(--green); }
+      .purple { --dynamic-colour: var(--purple); }
+      .orange { --dynamic-colour: var(--orange); }
+      .cyan { --dynamic-colour: var(--cyan); }
+      .magenta { --dynamic-colour: var(--magenta); }
+
+      /* Inputs order
+
+      {{show-crop}}
+      {{UEAis_theme}}
+      {{UEAis_country-information}}
+      {{{optional-flag}}}
+      {{UEA_logo--fs}}
+      {{{UEA_background-image--fs}}}
+      {{{UEA_heading--fs}}}
+      {{#collection.UEA_internal-pages--fs}}{{/collection.UEA_internal-pages--fs}}
+
+      */
+
+
+      html {
+        font-family: 'Brandon Text';
+        word-break: break-word !important;
+        font-size: 57.1735px !important;
+      }
+
+      [data-layout='a5'] { font-size: 41.2875px !important; }
+
+      .backgroundImage {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        overflow: hidden;
+      }
+
+      .backgroundImage div {
+        width: auto !important;
+        height: auto !important;
+        right: 0;
+        bottom: 0;
+      }
+
+      /* Helper classes */
+      .u-hide { display: none; }
+
+      /* Helper class for fixing Reposition tool bug */
+      .reposition-fix {
+        position: absolute;
+        overflow: hidden;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;        
+      }
+
+      .reposition-fix div {
+        top: 0 !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
+
+      .fit {
+        display: flex;
+        flex-direction: column;
+        padding: 1.3759rem;
+      }
+
+      .fit--gridPage {
+        justify-content: center;
+        padding: 0 0.7696rem;
+      }
+
+      .fit--infoPage {
+        padding: 1.2593rem 0 0 0;
+      }
+
+      .fit--backPage {
+        padding: 2.1688rem 2.3787rem 2.2388rem 2.2854rem;
+      }
+
+      .header {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.3992rem;
+      }
+
+      .countryInfo {
+        display: flex;
+        width: 6.9962rem;
+      }
+
+      .countryInfo__content {
+        display: flex;
+      }
+
+      .countryInfo__label {       
+        background: var(--white);
+      }
+
+      .countryInfo__text,
+      .countryInfo__label {
+        padding: 0.0933rem 0.1166rem;
+        text-transform: uppercase;
+        font-size: 0.2215rem;
+        line-height: 1em;
+        font-weight: 900;
+      }
+
+      .countryInfo__text {
+        color: var(--white);
+        background: var(--black);
+      }
+
+      .countryInfo__flag {
+        height: 0.4198rem;
+        width: 0.653rem;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-color: var(--grey);
+      }
+
+      .greece .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/dfeec9a6711694c307e5a9da1deb4130/Greece.svg); }
+      .singapore .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/49ca4b965f5900991a92e12abbf97487/Singapore.svg); }
+      .spain .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/264dfe308e41de2cc2b6c743294f0a84/Spain.svg); }
+      .russia .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/9355683517165d599c9e5d50506aa6d5/Russia.svg); }
+      .usa .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/f3ae4233009c5ac12f20723858f49d06/USA.svg); }
+      .germany .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/240976450fea8304da226c31955f27cf/Germany.svg); }
+      .italy .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/5a42b147a07846be4204ea7a9e0607fa/Italy.svg); }
+      .france .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/61143a0e57fe65858d3338550647d542/France.svg); }
+      .portugal .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/9481eec9d8bbdacb14be50f7a3ffee01/Portugal.svg); }
+      .poland .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/0aefed9e64b656992ec6c1d6ddd8c197/Poland.svg); }
+      .cyprus .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/8e971e6036dea87245d9072ee6252715/Cyprus.svg); }
+      .belgium .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/e43867572473ed282a9e68e6bdd80b87/Belgium.svg); }
+      .netherlands .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/8e54000d9166c7b9e5830f388a117917/Netherlands.svg); }
+      .ireland .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/b9ea7c526f8b62ce56b1cb3795ea5503/Ireland.svg); }
+      .latvia .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/13a5c52d63983f3441f2a482559f8d23/Latvia.svg); }
+      .lithuania .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/33b817d343fc5f4c1c419fa38576e482/Lithuania.svg); }
+      .romania .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/d6ce7d69d8aad93324c0974645b52f77/Romania.svg); }
+      .bulgaria .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/8fb9e15085a09c680ab7712c2136418b/Bulgaria.svg); }
+      .switzerland .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/5c0fd63b57f1abaea702b81dc3f5daea/Switzerland.svg); }
+      .sweden .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/cb976da8c68259479e2f1d8a92bf4158/Sweden.svg); }
+      .brunei .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/f1a7b69c7fd543a84a4886e4a54cb22d/Brunei.svg); }
+      .canada .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/824df6c2e47614bc1070f6674373e334/Canada.svg); }
+      .china .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/058d8cfa3c1e5675b828a603576c8837/China.svg); }
+      .hong-kong .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/a30dc47e4835d76a16f641ae6798f9d4/Hong%20Kong.svg); }
+      .india .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/a3a5fca08286b275be7df0a1ca11ffe9/India.svg); }
+      .indonesia .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/23be5ac5ca00b322e14eb33c0521e222/Indonesia.svg); }
+      .japan .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/d0e5f0fa18431ce560fa473a9e776755/Japan.svg); }
+      .kazakhstan .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/5cc8aa22bb01acc797c21499ab15d699/Kazakhstan.svg); }
+      .kenya .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/aee89506a27c5d48cfb3ca86f872a513/Kenya.svg); }
+      .korea .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/630542c84edb81dca970f3b6e6c70363/Korea.svg); }
+      .malaysia .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/d14a9e1e10d7b3a500fcdcf3d4854130/Malaysia.svg); }
+      .mauritius .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/f624c31490b91ade139af012ba36f99c/Mauritius.svg); }
+      .nigeria .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/9cee6c67b64136682984fd577d122779/Nigeria.svg); }
+      .finland .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/b0e6529c0c03f56c22d4775c7100407e/Finland.svg); }
+      .south-africa .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/6bb99c7c042d333457be25f701a4275a/South%20Africa.svg); }
+      .taiwan .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/e21940e8d4d34690bbdd62c499d6c9dc/Taiwan.svg); }
+      .thailand .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/2d774720fa996813b9d102ebc441407b/Thailand.svg); }
+      .turkey .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/be7d468a298df851d0ef54ece6245c2b/Turkey.svg); }
+      .vietnam .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/9370edc3f3637d744e254ebe408c04b7/Vietnam.svg); }
+      .zimbabwe .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/2353514f7fd718f81761c0835231cfc8/Zimbabwe.svg); }
+      .norway .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/9a97f70bc03cfb3975c09eed8d2f7fbb/Norway.svg); }
+      .brazil .countryInfo__flag { background-image: url(https://files.outfit.io/media_library_items/146559/Flag_of_Brazil.svg); }
+      .colombia .countryInfo__flag { background-image: url(https://files.outfit.io/media_library_items/146545/Flag_of_Colombia%2520%25281%2529.svg); }
+      .mexico .countryInfo__flag { background-image: url(https://files.outfit.io/media_library_items/146558/Flag_of_Mexico.svg); }
+      .peru .countryInfo__flag { background-image: url(https://files.outfit.io/media_library_items/146557/Flag_of_Peru_%2528state%2529.svg); }
+      .united-kingdom .countryInfo__flag { background-image: url(https://outfit-v2-exports-production.s3-accelerate.amazonaws.com/media_library_items/6a0c1e7f904228ea3acddb8afba6ed1b/unitedKingdom.svg); }
+
+      .middle-east .countryInfo__flag {
+        display: none;
+      }
+
+      .other-country .countryInfo__flag {
+        background-image: url({{{optional-flag}}});
+      }
+
+
+      .logo {
+        display: none;
+        font-size: 0;
+      }
+
+      .logo--norwich {
+        width: 4.0578rem;
+      }
+      .logo--uea {
+        width: 2.7752rem;
+      }
+
+      .logoChoice--uea-logo .logo--uea,
+      .logoChoice--norwich-uea-logo .logo--norwich {
+        display: block;
+      }
+
+      .glint {
+        fill: var(--dynamic-colour);
+      }
+
+      .body {
+        position: relative;
+        flex: 1;
+      }
+
+      .body--frontPage {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .body--backPage {
+        margin-bottom: 0.4664rem;
+      }
+
+      .heading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-transform: uppercase;
+        text-align: center;
+        color: var(--white);
+      }
+
+      .heading__glint {
+        margin-top: -0.1166rem;
+        margin-left: -0.2332rem;
+        width: 0.4664rem;
+        height: 0.4664rem;
+      }
+
+      .heading h1 {
+        position: relative;
+        font-size: 0.9888rem;
+        line-height: 1.2em;
+        font-weight: 900;
+        letter-spacing: 0.1166rem;
+      }
+
+      .heading h1:first-child {
+        position: relative;
+        margin-left: -1.0261rem;
+      }
+
+      .heading h1:first-child:before {
+        content: '';
+        position: relative;
+        display: inline-block;
+        transform: translate(0.2973rem, -0.5772rem);
+        width: 1.0319rem;
+        height: 1.0319rem;
+        background-image: url(https://files.outfit.io/media_library_items/230490/UEA-glynt-cyan.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+      .cyan .heading h1:first-child:before {
+        background-image: url(https://files.outfit.io/media_library_items/230490/UEA-glynt-cyan.svg);
+      }
+
+      .purple .heading h1:first-child:before {
+        background-image: url(https://files.outfit.io/media_library_items/230488/UEA-glynt-purple.svg);
+      }
+
+      .green .heading h1:first-child:before {
+        background-image: url(https://files.outfit.io/media_library_items/230489/UEA-glynt-green.svg);
+      }
+
+      .magenta .heading h1:first-child:before {
+        background-image: url(https://files.outfit.io/media_library_items/230487/uea-glynt-magenta.svg);
+      }
+
+      .orange .heading h1:first-child:before {
+        background-image: url(https://files.outfit.io/media_library_items/230486/UEA-glynt-orange.svg);
+      }
+
+      .popup__container {
+        display: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        background-color: var(--grey);
+      }
+
+      .no-background-image .popup__container {
+        display: block;
+      }
+
+      .popup {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        padding: 0.3498rem;
+        text-align: center;
+        font-size: 0.6996rem;
+        line-height: 1.2em;
+        color: var(--red);
+        background-color: var(--white);
+        border: 0.07rem solid var(--red);
+        z-index: 2;
+      }
+
+      /*Grid Page*/
+      .grid {
+        display: grid;
+        height: 18.5401rem;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: 3.7780rem repeat(4, 1fr);
+        grid-auto-flow: dense;
+        color: var(--white);
+      }
+
+      .grid__cell {
+        position: relative;
+        display: flex;
+      }
+
+      .grid__cell--intro {
+        background: #000;
+        padding: 0.6646rem 0 0.5131rem;
+        grid-column: 1 / -1;
+        align-items: center;
+      }
+
+      .grid__cell--accommodation {
+        flex-direction: column;
+        grid-column: span 2;
+        align-items: center;
+        justify-content: center;
+        padding: 0 0.6996rem;
+        background-image: url(https://files.outfit.io/media_library_items/231116/UEA_PG_Country_Insert_China_AW2-image12.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+
+      .grid__cell--transit {
+        flex-direction: column;
+        align-items: center;
+        padding: 0.1399rem 0.4664rem;
+        background-image: url(https://files.outfit.io/media_library_items/231119/UEA_PG_Country_Insert_China_AW2-image5.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+
+      .grid__cell--map {
+        position: relative;
+        grid-row: span 2;
+        background-color: #241f20;
+      }
+
+      .grid__cellBakground {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-image: url(https://files.outfit.io/media_library_items/231908/UEA-map.png);
+        background-repeat: no-repeat;
+        background-size: cover;  
+      }
+
+      .grid__cellGlint {
+        position: absolute;
+        top: 3.9645rem;
+        left: 2.8451rem;       
+        width: 0.6122rem;
+        height: 0.6122rem;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+      .cyan .grid__cellGlint {
+        background-image: url(https://files.outfit.io/media_library_items/230490/UEA-glynt-cyan.svg);
+      }
+
+      .purple .grid__cellGlint {
+        background-image: url(https://files.outfit.io/media_library_items/230488/UEA-glynt-purple.svg);
+      }
+
+      .green .grid__cellGlint {
+        background-image: url(https://files.outfit.io/media_library_items/230489/UEA-glynt-green.svg);
+      }
+
+      .magenta .grid__cellGlint {
+        background-image: url(https://files.outfit.io/media_library_items/230487/uea-glynt-magenta.svg);
+      }
+
+      .orange .grid__cellGlint {
+        background-image: url(https://files.outfit.io/media_library_items/230486/UEA-glynt-orange.svg);
+      }
+
+      .grid__cellImage {
+        position: absolute;
+        top: 3.4981rem;
+        left: 2.2388rem;
+        width: 1.7724rem;
+      }
+
+      .grid__cell--freeText {
+        flex-direction: column;
+        justify-content: center;
+        padding: 0.1399rem 0.2332rem;
+      }
+
+      .grid__cell--textAndIcon {
+        flex-direction: column;
+        align-items: center;
+        padding: 0.3965rem 0.2332rem 0.2332rem;
+        color: var(--black);
+      }
+
+      .grid__cell--iconAndStatistic {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0.0933rem 0.2332rem 0.2332rem;
+        color: var(--black);
+      }
+
+      .grid__cell--iconAndStatistic.backgroundColour--orange,
+      .grid__cell--textAndIcon.backgroundColour--orange {
+        background-color: var(--orange);
+      }
+      .grid__cell--iconAndStatistic.backgroundColour--green,
+      .grid__cell--textAndIcon.backgroundColour--green {
+        background-color: var(--green);
+      }
+      .grid__cell--iconAndStatistic.backgroundColour--cyan,
+      .grid__cell--textAndIcon.backgroundColour--cyan {
+        background-color: var(--cyan);
+      }
+
+      .grid__cell--tallIcon {
+        grid-row: span 2;
+        flex-direction: column;
+        align-items: center;
+        padding: 0.5364rem 0.2332rem 0.5364rem;
+        background-image: url(https://files.outfit.io/media_library_items/231114/UEA_PG_Country_Insert_China_AW2-image8.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;  
+      }
+
+      .grid__cell--airport {
+        flex-direction: column;
+        align-items: center;
+        padding: 0.3731rem 0.2332rem;
+        background-image: url(https://files.outfit.io/media_library_items/231115/UEA_PG_Country_Insert_China_AW2-image9.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+
+      .grid__cell--statistic {
+        flex-direction: column;
+        align-items: center;
+        padding: 0.07rem 0.2332rem;
+        background-image: url(https://files.outfit.io/media_library_items/231118/UEA_PG_Country_Insert_China_AW2-image4.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+
+      .topSquare {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        padding: 0 0.3498rem;
+        text-align: center;
+        font-weight: 700;
+      }
+
+      .topSquare__copy {
+        font-size: 0.2798rem;
+        line-height: 1.25em;
+      }
+
+      .topSquare__heading {
+        max-width: 2.8918rem;
+        font-size: 0;
+      }
+
+      .topSquare__headingInner {
+        font-size: 0.9328rem;
+        line-height: 1.2em;
+        margin-bottom: 0.07em;
+      }
+
+      .topSquare__logo {
+        height: 0.6996rem;
+        max-width: 3.0317rem;
+        object-fit: contain;
+        object-position: center;
+        margin: 0.2099rem 0 0.2565rem;
+      }
+
+      .grid__text {
+        position: relative;
+        text-align: center;
+        font-size: 0.4104rem;
+        line-height: 1.15em;
+        font-weight: 700;
+      }
+
+      .grid__cell--freeText .grid__text {
+        margin-top: 0.187rem;
+      }
+
+      .grid__heading {
+        position: relative;
+        margin-bottom: 0.07rem;
+        text-transform: uppercase;
+        text-align: center;
+        font-size: 1.5392rem;
+        line-height: 1.15em;
+        font-weight: 900;
+      }
+
+      .grid__heading--textAndIcon {
+        margin-bottom: 0.1166rem;
+        font-size: 0.4291rem;
+        line-height: 1.1em;
+        letter-spacing: 0.0816rem;
+        font-weight: 900;
+      }
+
+      .grid__heading--iconAndStatistic {
+        font-size: 0;
+        width: 2.7985rem;
+      }
+
+      .grid__heading--statistic {
+        max-width: 2.7985rem;
+      }
+
+      .grid__subheading {
+        position: relative;
+        margin-bottom: 0.3265rem;
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 0.4781rem;
+        line-height: 1.15em;
+        letter-spacing: 0.07rem;
+        font-weight: 700;
+      }
+
+      .grid__subheading--statistic {
+        margin-bottom: 0.2565rem;
+      }
+
+      .grid__copy {
+        position: relative;
+        text-align: center;
+        font-size: 0.2635rem;
+        line-height: 1.35em;
+        font-weight: 700;
+        letter-spacing: 0.01rem;
+      }
+
+      .grid__copy--iconAndStatistic {
+        font-size: 0.2729rem;
+      }
+
+      .grid__background {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+
+      .grid__icon {
+        position: relative;
+        max-height: 0.9562rem;
+        width: 3.0084rem;
+        margin-bottom: 0.2332rem;
+        object-fit: contain;
+        object-position: top center;
+      }
+
+      .grid__icon--iconAndStatistic {
+        width: 1.1194rem;
+      }
+
+      .grid__icon--tallIcon {
+        max-height: 1.0728rem;
+        width: 3.0084rem;
+        margin-bottom: 0.2798rem;
+      }
+
+      .grid__icon--airport {
+        width: 1.4459rem;
+        margin-bottom: 0.4198rem;
+      }
+      /*Grid Page*/
+
+      /*Info Page*/
+      .sectionTop {
+        flex: 1;
+        padding: 0 1.306rem 0.1866rem;
+        color: var(--black);
+      }
+
+      .content__container {
+        position: relative;
+      }
+
+      .content {
+        margin-bottom: 0.07rem;
+        font-size: 0;
+      }
+
+      .content__heading {
+        margin-bottom: 0.1632rem;
+        text-transform: uppercase;
+        font-size: 0.3778rem;
+        line-height: 1.2em;
+        font-weight: 900;
+        letter-spacing: 0.07rem;
+      }
+
+      .content__copy {
+        margin-bottom: 0.1632rem;
+        font-size: 0.273rem;
+        font-weight: normal;
+        font-style: normal;
+        line-height: 1.2em;
+        color: var(--grey);
+      }
+
+      .is-firefox .content__copy {
+        font-size: 0.2635rem;
+      }
+
+      .is-export-mode .content__copy { line-height: 1.15em; }
+
+      .content__copy p {
+        margin-bottom: 0.1166rem;
+      }
+
+      .content__copy p:last-child {
+        margin-bottom: 0;
+      }
+
+      .content__url {
+        display: inline-block;
+        padding: 0.07rem 0.07rem 0.0933rem 0.0466rem;
+        font-size: 0.2449rem;
+        line-height: 0.9em;
+        font-weight: 700;
+        color: var(--white);
+        background-color: var(--black);
+      }
+
+      .content__url a {
+        color: var(--white);
+        text-decoration: none;
+      }
+
+      .content__heading:last-child,
+      .content__copy:last-child {
+        margin-bottom: 0;
+      }
+
+      .sectionBottom {
+        padding: 0.5364rem 1.3293rem 0.55rem;
+        color: var(--white);
+        background: var(--purple);
+      }
+
+      .tableBlock {
+        max-height: 11.0191rem;
+      }
+
+      .tableBlock__heading {
+        margin-bottom: 0.583rem;
+        text-transform: uppercase;
+        font-size: 0.3965rem;
+        line-height: 1.2em;
+        font-weight: 700;
+        letter-spacing: 0.0536rem;
+      }
+
+      .tableBlock__content {
+        margin-bottom: 0.583rem;
+      }
+
+      .table__container {
+        margin-bottom: 0.5131rem;
+      }
+
+      .table__heading {
+        margin-bottom: 0.1399rem;
+        text-transform: uppercase;
+        font-size: 0.2798rem;
+        line-height: 1.2em;
+        font-weight: 700;
+      }
+
+      .tableBlock__heading:last-child,
+      .tableBlock__content:last-child,
+      .table__container:last-child,
+      .table__heading:last-child {
+        margin-bottom: 0;
+      }
+
+      .table {
+        width: 100%;
+      }
+
+      .table__cell {
+        padding-top: 0.0466rem;
+        padding-bottom: 0.07rem;
+        font-size: 0.2705rem;
+        line-height: 1.2em;
+        border-bottom: 1pt solid var(--white);
+      }
+
+      .table__cell--primary {
+        width: auto;
+      } 
+
+      .table__cell--secondary {
+        width: 3.125rem;
+        padding-right: 0.1166rem;
+        text-align: right;
+        font-size: 0.2775rem;
+      }
+
+      .table__cell--tertiary {
+        width: 3.7313rem;
+        padding-left: 0.3498rem;
+        padding-right: 0.1166rem;
+        text-align: right;
+        font-size: 0.2775rem;
+      }
+
+      .tableBlock__copy {
+        font-size: 0.1959rem;
+        line-height: 1.2em;
+      }
+
+      .table__container + .tableBlock__copy {
+        margin-top: 0.6763rem;
+      }
+
+      .tableBlock__copy + .table__container {
+        margin-top: 0.6763rem;
+      }
+
+      .tableBlock__copy p {
+        margin-bottom: 0.1166rem;
+      }
+
+      .tableBlock__copy p:last-child {
+        margin-bottom: 0;
+      }
+
+      /*Separator in Info Page Because Data Max Height is Ignoring Padding*/
+      .separator {
+        opacity: 0;
+        height: 0.2332rem;
+        margin-top: 0.4198rem;
+      }
+      /*Info Page*/
+
+      /*Back Page*/
+      .copyBlock {
+        position: relative;
+      }
+
+      .copyBlock a {
+        padding: 0.0466rem 0.0933rem;
+        line-height: 1.7em;
+        font-weight: 700;
+        text-decoration: none;
+        color: var(--white);
+        background-color: var(--black);
+      }
+
+      .copyBlock--content:before {
+        display: none;
+        position: absolute;
+        top: 0.07rem;
+        left: -1.6091rem;
+        width: 1.3293rem;
+        height: 0.7463rem;
+        background-image: url(https://files.outfit.io/media_library_items/231858/UEA-quote-icon.svg);
+        background-size: cover;
+        background-repeat: no-repeat;
+        content: '';
+      }
+
+      [data-bottom-content-type="quote"] .copyBlock--content:before { display: block; }
+
+      .copyBlock:first-child {
+        height: 5.014rem;
+        margin-bottom: 0.6996rem;
+      }
+
+      .copyBlock:nth-child(2) {
+        height: 5.3696rem;
+      }
+
+      .copyBlock__heading {
+        margin-bottom: 0.6297rem;
+        text-transform: uppercase;
+        font-size: 0.3801rem;
+        line-height: 1.2em;
+        font-weight: 900;
+        letter-spacing: 0.0606rem;
+      }
+
+      .copyBlock__inner { max-height: 5.3696rem; }
+      .copyBlock:first-child .copyBlock__inner { max-height: 5.0198rem; }
+
+      .text {
+      }
+
+      .text p {
+        margin-bottom: 0.1866rem;
+        font-size: 0.2694rem;
+        line-height: 1.2em;
+        color: var(--grey);
+      }
+
+      .text p:last-child {
+        margin-bottom: 0;
+      }
+
+      .copyBlockTwoColumns p {
+        margin-bottom: 0.1866rem;
+        font-size: 0.2694rem;
+        line-height: 1.2em;
+        color: var(--grey);
+      }
+
+      .copyBlockTwoColumns p:last-child,
+      .copyBlockTwoColumns h2:last-child {
+        margin-bottom: 0;
+      }
+
+      .copyBlockTwoColumns h2 {
+        margin-bottom: 0.3265rem;
+        font-size: 0.3965rem;
+        line-height: 1.2em;
+      }
+
+      .divider {
+        position: absolute;
+        top: 5.014rem;
+        left: 0;
+        width: 12.1268rem;
+        height: 1pt;
+        background: black;
+      }
+
+      .featureImage {
+        position: absolute;
+        bottom: -1.9589rem;
+        right: -3.125rem;
+        width: 5.0373rem;
+        height: 5.0373rem;
+        overflow: hidden;
+        z-index: 99;
+      }
+
+      [data-bottom-content-type="quote"] .featureImage { border-radius: 50%; }
+
+      .footer {
+        position: relative;
+        height: 6.2966rem;
+        margin: 0 -2.4020rem -2.2388rem;
+        padding: 0.6996rem 2.2388rem 0.653rem;
+        color: var(--white);
+        background: var(--brown);
+      }
+
+      .footer__glint {
+        position: absolute;
+        top: 0;
+        left: 0.8046rem;
+        transform: translateY(-50%);
+        width: 1.1369rem;
+        height: 1.1369rem;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+      .cyan .footer__glint {
+        background-image: url(https://files.outfit.io/media_library_items/230490/UEA-glynt-cyan.svg);
+      }
+
+      .purple .footer__glint {
+        background-image: url(https://files.outfit.io/media_library_items/230488/UEA-glynt-purple.svg);
+      }
+
+      .green .footer__glint {
+        background-image: url(https://files.outfit.io/media_library_items/230489/UEA-glynt-green.svg);
+      }
+
+      .magenta .footer__glint {
+        background-image: url(https://files.outfit.io/media_library_items/230487/uea-glynt-magenta.svg);
+      }
+
+      .orange .footer__glint {
+        background-image: url(https://files.outfit.io/media_library_items/230486/UEA-glynt-orange.svg);
+      }
+
+      .contact__container {
+
+      }
+
+      .contact__heading {
+        margin-bottom: 0.6996rem;
+        text-transform: uppercase;
+        font-size: 0.3731rem;
+        line-height: 1.2em;
+        font-weight: 900;
+        letter-spacing: 0.0653rem;
+      }
+
+      .contact__wrapper {
+        display: flex;
+      }
+
+      .contact {
+        display: flex;
+      }
+
+      .contact + .contact {
+        margin-left: 0.5131rem;
+      }
+
+      .contact__image {
+        position: relative;
+        width: 1.3293rem;
+        height: 1.3293rem;
+        margin-top: 0.0466rem;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+
+      .contact__content {
+        /*max-width: 164px;*/
+      }
+
+      .contact__wrapper.numberOfContactImages--2 .contact__content {
+        max-width: 3.3757rem;
+      }
+
+      .contact__wrapper.numberOfContactImages--1 .contact__content {
+        max-width: 4.0491rem;
+      }
+
+      .contact__wrapper.numberOfContactImages--0 .contact__content {
+        max-width: 4.7137rem;
+      }
+
+      .contact__image + .contact__content {
+        margin-left: 0.2565rem;
+      }
+
+      .contact__text {
+        font-size: 0.2752rem;
+        line-height: 1.2em;
+      }
+
+      .contact__text--email {
+        font-size: 0;
+      }
+
+      .contact__textInner {
+        font-size: 0.2752rem;
+      }
+
+      .contact__text--name {
+        font-weight: 700;
+      }
+
+      .contact__container + .social__container {
+        margin-top: 0.8395rem;
+      }
+
+      .social__container {
+        display: flex;
+        flex-wrap: wrap;
+        max-height: 1.3992rem;
+        margin-left: -0.8862rem;
+        justify-content: center;
+      }
+
+      .social {
+        display: flex;
+        align-items: center;
+        margin-left: 0.7463rem;
+        font-size: 0;
+        margin-bottom: 0.2332rem;
+      }
+
+      .social__image {
+        width: 0.4198rem;
+        height: 0.4198rem;
+        object-fit: contain;
+      }
+
+      .social__text {
+        font-size: 0.3335rem;
+        line-height: 1em;
+      }
+
+      .social__image + .social__text {
+        margin-left: 0.1632rem;
+      }
+
+      .rowBreak {
+        width: 100%;
+        height: 1pt;
+        padding: 0;
+      }
+      /*Back Page*/
+
+      /*Dynamic Columns in Collection - Info Page*/
+      [data-original-content] {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        overflow: hidden;        
+        opacity: 0;
+        z-index: -9999;
+      }
+
+      [data-dynamic-content]{
+        display: flex;
+      }
+
+      .column {
+        margin-right: 0.2624rem;
+        flex: 1;
+      }
+
+      .column:last-child {
+        margin-right: 0;
+      }
+
+      /*Dynamic Columns in Text Input*/
+      .column-structure{ display: flex; }
+      .column-structure .column { margin-right: 0.3rem; }
+      .column-structure .column:last-child{ margin-right: 0; }
+      .column { flex: 1; }
+
+      .original-content{ 
+        position: absolute;
+        overflow: hidden;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        opacity: 0;
+      }
+
+      /*Errors Related CSS*/
+      .error__container,
+      .topSquare__errorContainer {
+        display: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+      }
+
+      .error__container.no-background-image {
+        display: block;
+      }
+
+      .error__container--freeText {
+        background-image: url(https://files.outfit.io/media_library_items/231117/UEA_PG_Country_Insert_China_AW2-image2.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+
+      .error__container--tallIcon {
+        background-image: url(https://files.outfit.io/media_library_items/231114/UEA_PG_Country_Insert_China_AW2-image8.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+
+      .error__container--statistic {
+        background-image: url(https://files.outfit.io/media_library_items/230134/UEA_PG_Country_Insert_China_AW2-image4.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+
+      .error,
+      .topSquare__error {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        max-width: 8.1623rem;
+        max-height: 3.0317rem;
+        transform: translate(-50%, -50%);
+        padding: 0.1866rem;
+        text-align: center;
+        font-size: 0.3265rem;
+        font-weight: 900;
+        line-height: 1.2em;
+        color: var(--red);
+        background-color: var(--white);
+        border: 0.0466rem solid var(--red);
+      }
+
+      .topSquare__error {
+        font-size: 0.3731rem;
+      }
+
+      /*Helper classes*/
+      .u-hide { display: none; }
+
+      .u-flex-dir-column { flex-direction: column; align-items: flex-start; }  
+
+      .u-flex-end { justify-content: flex-end; }
+
+      /*Individual Elements Overflow Styling*/
+      .heading.overflow:before,
+      .heading.overflow:after {
+        font-size: 0.8em;
+      }
+
+      .grid__heading--textAndIcon.overflow:before,
+      .grid__heading--textAndIcon.overflow:after,
+      .grid__subheading.overflow:before,
+      .grid__subheading.overflow:after {
+        font-size: 0.4em;
+      }
+
+      /*Text Fit Related*/
+      .textFit.overflow:hover:after,
+      .textFit--email.overflow:hover:after { content: 'Min font size exceeded'; }
+      .textFit--2.overflow:hover:after,
+      .textFit--3.overflow:hover:after { content: 'Min font size exceeded'; font-size: 0.5em; }
+      .textFit--2.overflow:hover:before,
+      .textFit--3.overflow:hover:before {  font-size: 0.5em;  }
+
+      .u-pos-relative {
+        position: relative;
+      }
+
+      /* Styling for custom floatBox */
+      .floatBox {
+        display: none;
+        position: relative;
+        float: right;
+        clear: right;
+        height: 2.9209rem;
+        width: 2.0114rem;
+        background: transparent;
+      }
+
+      .floatBox__line {
+        display: none;
+        float: right;
+        width: 0.1224rem;
+        height: 2.3437rem;
+        background: transparent;
+      }
+
+      /* Temporarily disabled floatbox functionality 
+      .copyBlock:nth-child(2) .column:last-child .floatBox__line,
+      .copyBlock:nth-child(2) .copyBlock__inner .floatBox__line,
+      .copyBlock:nth-child(2) .column:last-child .floatBox--1,
+      .copyBlock--copy:nth-child(2) .floatBox--1,
+      .featureImageShape--circle .copyBlock:nth-child(2) .column:last-child .floatBox--circleSegment,
+      .featureImageShape--circle .copyBlock--copy:nth-child(2) .floatBox--circleSegment {
+      display: block;
+      }     
+      */
+
+      .featureImageShape--circle .copyBlock:nth-child(2) .floatBox--1 {
+        width: 0.4897rem;
+        height: 0.1924rem;
+      }
+
+      .featureImageShape--circle .copyBlock:nth-child(2) .floatBox--2 {
+        height: 0.3498rem;
+        width: 0.8046rem;
+      }
+
+      .featureImageShape--circle .copyBlock:nth-child(2) .floatBox--3 {
+        height: 0.3498rem;
+        width: 1.3293rem;
+      }
+
+      .featureImageShape--circle .copyBlock:nth-child(2) .floatBox--4 {
+        height: 0.3148rem;
+        width: 1.5916rem;
+      }
+
+      .featureImageShape--circle .copyBlock:nth-child(2) .floatBox--5 {
+        height: 1.7141rem;
+        width: 1.9589rem;
+      }
+
+      .content__url.overflow[data-max-height]:hover:after {
+        content: 'Max number of lines exceeded';
+      }
+
+      .contact__text--phone.overflow {
+        color: var(--red);
+      }
+
+      .contact__text--phone.overflow:hover:after {
+        content: 'Invalid phone format';
+      }
+
+      [element-error='true'][column-error='max-column']:hover::after { content: "You can only add a maximum of " attr(max-columns) " columns"; }
+      [element-error='true'][column-error='min-column']:hover::after { content: "You must add at least " attr(min-columns) " column/s"; }
+
+      .spread-page{
+        display: none;
+      }
+
+      .spread-container {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        display: flex;
+      }
+
+      .spread-container .container {
+        width: 50%;
+      }
+
+      .spread-container .container.fit {
+        position: relative;
+      }
+
+      /* 15/12/2020 RJ Update */
+      /*.UEA_spreadsheet-block--rj .table__fixed {
+      table-layout: fixed;
+      }
+      .UEA_spreadsheet-block--rj .table__row .table__cell {
+      font-size: 10pt;
+      border-color: var(--black);
+      }
+      .UEA_spreadsheet-block--rj .table__row:first-child .table__cell {
+      font-weight: bold;
+      }
+      .UEA_spreadsheet-block--rj .text-center {
+      text-align: center;
+      }
+      .sectionBottom .UEA_spreadsheet-block--rj .table__row .table__cell {
+      border-color: var(--white);
+      }
+      */
+      /*Converting table to a flexbox structure to make it a flexi-table*/
+      /*.table__fixed tbody{
+      width: 100%;
+      display: block;
+      }
+
+      .table__fixed tr{
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      }
+
+      .table__fixed  .table__cell{
+      flex: 1;
+      }*/
+      .tableBlock--p3 {
+        margin-bottom: 0.69rem;
+        display: flex;
+        justify-content: center;
+      }
+
+      .tableBlock--p3 table {
+        border-collapse: collapse;
+        min-width: 88%;
+        max-width: 100%;
+        color: #000;
+      }
+
+      .tableBlock--p3 th, .tableBlock--p3 tr:first-child td {
+        height: 0.44377rem;
+        font-size: 0.21rem;
+        line-height: 0.2569rem;
+        text-align: center;
+        font-weight: 700;
+        border-top: none;
+      }
+      .is-export-mode .tableBlock--p3 tr:first-child td { font-size: 0.2079rem; }
+
+      .tableBlock--p3 td {
+        height: 0.373rem;
+        padding-left: 0;
+        font-size: 0.233rem;
+        text-align: center;
+        border-top: 0.0175rem solid black;
+        border-bottom: 0.0175rem solid black;
+      }
+      .is-export-mode .tableBlock--p3 td { font-size: 0.23rem; }
+      /*
+      .cyan .tableBlock--p3 td {
+      border-bottom: 0.0175rem solid rgb(0,174,239);
+      border-top: 0.0175rem solid rgb(0,174,239);
+      }
+
+      .orange .tableBlock--p3 td {
+      border-bottom: 0.017rem solid rgb(250,166,26);
+      border-top: 0.014rem solid rgb(250,166,26);
+      }
+
+      .green .tableBlock--p3 td {
+      border-bottom: 0.017rem solid rgb(141,198,63);
+      border-top: 0.017rem solid rgb(141,198,63);
+      }
+
+      .purple .tableBlock--p3 td {
+      border-bottom: 0.0175174rem solid rgb(127,64,152);
+      border-top: 0.0175174rem solid rgb(127,64,152);
+      }
+
+      .magenta .tableBlock--p3 td {
+      border-bottom: 0.017rem solid rgb(236,0,140);
+      border-top: 0.017rem solid rgb(236,0,140);
+      }
+      */
+
+      .tableBlock--p3 th:last-child,
+      .tableBlock--p3 td:last-child {
+        border-right: none;
+      }
+
+      .tableBlock--p3 tr:last-child td{
+        border-bottom: 0.0175rem solid black;
+      }
+
+      .tableBlock--p3 .table__row--helper td {
+        height: 0;
+        font-size: 0;
+        border: none;
+      }
+
+      /* 08/01/2021 */
+      .sectionTop .cyan td,
+      .sectionTop .magenta td, 
+      .sectionTop .orange td, 
+      .sectionTop .green td,
+      .sectionTop .purple td {
+        border-color: var(--black) !important;
+      }
+
+      .placeholder {
+        position: absolute;
+        top: 3mm;
+        left: 3mm;
+        right: 3mm;
+        bottom: 3mm;
+        background: url(https://files.outfit.io/media_library_items/230117/UEA_PG_Country_Insert_China_AW2-placeholder1.jpg) center no-repeat;
+        opacity: 0.3;
+        z-index: 999;
+        background-size: cover;
+        pointer-events: none;
+        display: none;
+      }
+
+
+      /* ANY OTHER STYLES THAT NEED MUSTACHE.JS CAPABILITIES */
+    </style>
+  </head>
+  <body style="background: white" 
+        data-crop="{{show-crop}}" 
+        data-reduce-export-font-size-by-percent="0.5" 
+        data-reduce-firefox-font-size-by-percent="0" 
+        data-prevent-export-overflow="false"
+        class="{{^UEA_background-image--fs}}no-background-image{{/UEA_background-image--fs}}
+               logoChoice--{{UEA_logo--fs}}{{^UEA_logo--fs}}uea-logo{{/UEA_logo--fs}}
+               {{UEAis_theme}}{{^UEAis_theme}}cyan{{/UEAis_theme}}">
+
+    <div class="page individual">
+
+      <div class="bleed">
+
+        <div class="container fit fit--frontPage">
+          <div class="popup__container"><div class="popup">Add image here.</div></div><!--popup__container-->
+          <div class="backgroundImage">
+            <div class="reposition-fix">{{{UEA_background-image--fs}}}</div><!--reposition-fix-->
+          </div><!--backgroundImage-->
+          <div class="header">
+            <div class="countryInfo" data-clc-hook="container">
+              <div class="countryInfo__label">essential information</div><!--countryInfo__label-->
+              <div class="countryInfo__content">
+                <div class="countryInfo__text" data-clc-hook="country-name" data-max-height="30"></div><!--countryInfo__text-->
+                <div class="countryInfo__flag"></div><!--countryInfo__flag-->
+              </div><!--countryInfo__content-->
+            </div><!--countryInfo-->
+            <div class="logo logo--uea">
+              <svg viewBox="0 0 113 68" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                   xmlns:xlink="http://www.w3.org/1999/xlink">
+                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                  <g id="UEA_NEW_BRAND_Green">
+                    <path
+                          d="M27.731,51.046 C27.117,51.046 27.535,51.029 26.958,51.029 C19.827,51.029 14.474,46.128 14.474,32.408 L14.474,12.187 C14.474,5.253 17.541,2.622 21.878,2.622 L21.878,1.798 L0,1.798 L0,2.612 C3.802,2.686 5.177,5.917 5.177,10.167 L5.177,30.101 C5.177,45.118 12.366,51.899 25.4,51.899 C25.541,51.899 25.86,51.899 25.86,51.899 L27.729,51.899 L27.731,51.046"
+                          id="Fill-1" fill="white"></path>
+                    <path
+                          d="M71.689,37.099 C71.604,29.571 69.907,27.952 62.389,27.88 L62.389,27.136 C69.907,27.062 71.604,25.446 71.689,17.919 L72.397,17.919 C72.484,25.446 74.177,27.057 81.695,27.13 L81.695,27.88 C74.177,27.952 72.484,29.571 72.397,37.099 L71.689,37.099"
+                          id="Fill-2" fill="" class="glint"></path>
+                    <path
+                          d="M31.349,51.051 C38.152,51.051 41.146,46.432 41.146,39.903 C41.146,32.083 41.146,39.903 41.146,39.903 L41.139,11.515 C41.139,4.847 37.798,2.629 33.747,2.629 L33.744,1.796 L72.388,1.796 L72.406,12.283 L71.72,12.281 C70.567,6.116 68.162,3.708 60.322,3.708 C60.322,3.708 59.009,3.708 58.504,3.708 C51.131,3.708 49.681,6.06 49.681,12.659 C49.681,14.544 49.681,18.798 49.681,18.798 C49.681,26.8 52.948,27.128 59.106,27.128 L59.106,27.878 C52.948,27.878 49.681,28.55 49.681,36.63 L49.681,39.257 C49.681,49.155 50.93,49.814 59.249,49.814 C64.167,49.814 70.163,48.554 71.704,41.769 L72.407,41.772 L72.407,51.899 L31.349,51.899 L31.349,51.051"
+                          id="Fill-3" fill="white"></path>
+                    <path
+                          d="M86.156,51.046 C92.949,51.046 94.665,46.659 91.585,39.778 L81.175,13.744 L84.183,0.868 L84.756,0.866 C84.756,0.866 99.072,34.856 102.622,41.733 C106.369,48.991 109.518,51.051 112.625,51.051 L112.625,51.899 L86.156,51.899 L86.156,51.046"
+                          id="Fill-4" fill="white"></path>
+                    <path
+                          d="M7.958,66.364 C6.165,66.364 5.093,65.073 5.093,62.911 L5.093,58.488 L6.198,58.488 L6.198,62.855 C6.198,64.478 6.935,65.209 7.979,65.209 C9.019,65.209 9.73,64.497 9.73,62.911 L9.73,58.488 L10.834,58.488 L10.834,62.845 C10.834,65.048 9.76,66.364 7.958,66.364"
+                          id="Fill-5" fill="white"></path>
+                    <path
+                          d="M16.516,66.189 L15.439,66.189 L15.439,62.755 C15.439,61.783 15.032,61.269 14.334,61.269 C13.603,61.269 13.027,61.853 13.027,62.823 L13.027,66.189 L11.951,66.189 L11.951,60.292 L12.964,60.292 L12.964,61.124 C13.309,60.487 13.854,60.17 14.546,60.17 C15.742,60.17 16.516,61.101 16.516,62.545 L16.516,66.189"
+                          id="Fill-6" fill="white"></path>
+                    <path
+                          d="M17.901,59.588 L18.963,59.588 L18.963,58.497 L17.901,58.497 L17.901,59.588 Z M17.897,66.189 L18.973,66.189 L18.973,60.292 L17.897,60.292 L17.897,66.189 Z"
+                          id="Fill-7" fill="white"></path>
+                    <polyline id="Fill-8" fill="white"
+                              points="22.841 66.231 21.89 66.231 19.778 60.292 20.917 60.292 22.368 64.71 23.827 60.292 24.947 60.292 22.841 66.231">
+                    </polyline>
+                    <path
+                          d="M26.335,62.766 L29.072,62.766 C28.978,61.885 28.53,61.192 27.723,61.192 C26.956,61.192 26.425,61.909 26.335,62.766 Z M27.837,66.322 C26.324,66.322 25.221,64.999 25.221,63.245 C25.221,61.491 26.315,60.17 27.742,60.17 C29.168,60.17 30.168,61.423 30.168,63.289 C30.168,63.369 30.168,63.46 30.158,63.597 L30.154,63.724 L26.341,63.724 C26.462,64.785 27.117,65.314 27.857,65.314 C28.336,65.314 28.851,65.114 29.296,64.574 L29.339,64.524 L29.384,64.569 L29.931,65.115 L29.977,65.163 L29.936,65.219 C29.389,65.974 28.698,66.322 27.837,66.322 Z"
+                          id="Fill-9" fill="white"></path>
+                    <path
+                          d="M32.177,66.189 L31.119,66.189 L31.119,60.292 L32.152,60.292 L32.152,61.558 C32.51,60.642 33.14,60.19 33.919,60.19 C33.95,60.19 34.069,60.194 34.069,60.194 L34.069,61.462 L33.949,61.462 C32.978,61.462 32.177,62.224 32.177,63.823 L32.177,66.189"
+                          id="Fill-10" fill="white"></path>
+                    <path
+                          d="M36.405,66.298 C35.75,66.298 35.01,66.03 34.441,65.497 L34.395,65.456 L34.879,64.614 L34.932,64.659 C35.474,65.13 35.953,65.317 36.513,65.317 C37.091,65.317 37.432,65.042 37.432,64.591 C37.432,64.118 37.067,63.95 36.388,63.731 C35.673,63.497 34.696,63.157 34.696,61.933 C34.696,60.898 35.541,60.192 36.574,60.192 C37.189,60.192 37.787,60.372 38.315,60.776 L38.366,60.814 L37.93,61.698 L37.877,61.657 C37.405,61.305 36.876,61.173 36.529,61.173 C35.998,61.173 35.68,61.453 35.68,61.821 C35.68,62.286 35.976,62.397 36.854,62.669 C37.82,62.97 38.413,63.524 38.413,64.48 C38.413,65.576 37.584,66.298 36.405,66.298"
+                          id="Fill-11" fill="white"></path>
+                    <path
+                          d="M46.412,68 C45.693,68 45.01,67.501 45.01,67.501 L45.37,66.512 C45.37,66.512 45.924,66.925 46.351,66.925 C46.926,66.925 47.187,66.565 47.396,65.966 L45.153,60.292 L46.319,60.292 L47.917,64.505 L49.226,60.292 L50.362,60.292 L48.236,66.331 C47.828,67.403 47.231,68 46.436,68"
+                          id="Fill-12" fill="white"></path>
+                    <path
+                          d="M54.704,61.223 C53.871,61.223 53.114,61.98 53.114,63.206 C53.114,64.44 53.879,65.229 54.723,65.229 C55.562,65.229 56.327,64.47 56.327,63.251 C56.327,62.129 55.624,61.225 54.704,61.225 M54.704,66.306 C53.222,66.306 52.019,64.963 52.019,63.251 C52.019,61.503 53.229,60.153 54.723,60.153 C56.21,60.153 57.428,61.494 57.428,63.206 C57.428,64.952 56.202,66.306 54.704,66.306"
+                          id="Fill-13" fill="white"></path>
+                    <path
+                          d="M59.579,66.183 L58.486,66.183 L58.486,61.353 L57.802,61.353 L57.802,60.286 L58.486,60.286 L58.486,59.903 C58.486,58.466 59.592,58.173 60.103,58.173 C60.489,58.173 60.742,58.241 60.943,58.323 L60.985,58.341 L60.985,59.407 L60.931,59.382 C60.773,59.302 60.502,59.239 60.322,59.239 C59.781,59.239 59.57,59.542 59.57,60.029 L59.57,60.298 L60.975,60.298 L60.975,61.353 L59.579,61.353 L59.579,66.183"
+                          id="Fill-14" fill="white"></path>
+                    <polyline id="Fill-15" fill="white"
+                              points="68.461 66.18 63.709 66.18 63.709 58.476 68.413 58.476 68.413 59.589 64.83 59.589 64.83 61.591 67.979 61.591 67.979 62.702 64.83 62.702 64.83 65.077 68.461 65.077 68.461 66.18">
+                    </polyline>
+                    <path
+                          d="M70.168,64.355 C70.168,64.964 70.61,65.278 71.183,65.278 C72.092,65.278 72.61,64.62 72.61,63.866 L72.61,63.545 C72.368,63.398 71.939,63.296 71.476,63.296 C70.819,63.296 70.168,63.625 70.168,64.355 Z M71.038,66.284 C70.084,66.284 69.076,65.678 69.076,64.383 C69.076,63.138 69.987,62.296 71.362,62.296 C71.891,62.296 72.331,62.41 72.587,62.519 L72.587,62.437 C72.587,61.817 72.271,61.239 71.413,61.239 C70.796,61.239 70.212,61.463 69.744,61.773 L69.683,61.813 L69.372,60.8 L69.423,60.761 C69.884,60.458 70.646,60.177 71.433,60.177 C72.143,60.177 72.739,60.403 73.11,60.832 C73.471,61.251 73.667,61.82 73.667,62.574 L73.667,66.18 L72.723,66.18 L72.723,65.433 C72.511,65.835 71.89,66.284 71.038,66.284 Z"
+                          id="Fill-16" fill="white"></path>
+                    <path
+                          d="M88.896,63.121 L87.704,60.089 L86.514,63.124 L88.896,63.121 Z M91.24,66.18 L90.04,66.18 L89.31,64.232 L86.104,64.232 L85.374,66.18 L84.188,66.18 L87.282,58.486 L88.146,58.486 L91.24,66.18 Z"
+                          id="Fill-17" fill="white"></path>
+                    <path
+                          d="M99.789,61.238 C99.01,61.238 98.341,61.847 98.341,62.926 C98.341,64.005 99.037,64.659 99.789,64.659 C100.637,64.659 101.365,63.972 101.365,62.958 C101.365,61.764 100.57,61.238 99.789,61.238 M99.797,67.98 C98.944,67.98 98.171,67.708 97.498,67.167 L97.451,67.128 L97.915,66.157 L97.971,66.206 C98.538,66.685 99.17,66.927 99.85,66.927 C100.96,66.927 101.469,66.151 101.469,65.126 L101.469,64.659 C101.127,65.384 100.395,65.733 99.645,65.733 C98.463,65.733 97.24,64.7 97.24,62.972 C97.24,61.202 98.463,60.161 99.645,60.161 C100.397,60.161 101.162,60.522 101.527,61.183 L101.527,60.282 L102.485,60.282 L102.485,65.106 C102.485,65.988 102.263,66.69 101.831,67.192 C101.383,67.708 100.623,67.98 99.797,67.98"
+                          id="Fill-18" fill="white"></path>
+                    <polygon id="Fill-19" fill="white"
+                             points="103.688 66.179 104.764 66.179 104.764 58.491 103.688 58.491"></polygon>
+                    <path
+                          d="M43.647,66.294 C42.701,66.294 42.126,65.69 42.126,64.597 L42.126,61.374 L41.433,61.374 L41.433,60.296 L42.11,60.295 L42.11,58.661 L43.207,58.661 L43.207,60.298 L44.665,60.298 L44.665,61.374 L43.207,61.374 L43.207,64.312 C43.207,64.866 43.392,65.194 43.86,65.194 C44.105,65.194 44.346,65.136 44.525,65.03 L44.615,64.981 L44.611,66.02 L44.57,66.04 C44.283,66.214 43.988,66.294 43.647,66.294"
+                          id="Fill-20" fill="white"></path>
+                    <path
+                          d="M81.133,66.275 C80.186,66.275 79.611,65.672 79.611,64.579 L79.611,61.356 L78.917,61.356 L78.917,60.289 L79.59,60.288 L79.588,58.642 L80.692,58.642 L80.692,60.278 L82.149,60.278 L82.149,61.356 L80.692,61.356 L80.692,64.293 C80.692,64.847 80.877,65.175 81.345,65.175 C81.591,65.175 81.831,65.118 82.01,65.012 L82.1,64.962 L82.102,66.002 L82.055,66.023 C81.768,66.195 81.473,66.275 81.133,66.275"
+                          id="Fill-21" fill="white"></path>
+                    <path
+                          d="M96.369,66.184 L95.29,66.184 L95.29,62.751 C95.29,61.779 94.883,61.265 94.186,61.265 C93.455,61.265 92.879,61.849 92.879,62.818 L92.879,66.184 L91.802,66.184 L91.802,60.288 L92.816,60.288 L92.816,61.12 C93.161,60.482 93.706,60.165 94.397,60.165 C95.594,60.165 96.369,61.097 96.369,62.54 L96.369,66.184"
+                          id="Fill-22" fill="white"></path>
+                    <path
+                          d="M39.445,59.591 L40.508,59.591 L40.508,58.5 L39.445,58.5 L39.445,59.591 Z M39.441,66.202 L40.518,66.202 L40.518,60.294 L39.441,60.294 L39.441,66.202 Z"
+                          id="Fill-23" fill="white"></path>
+                    <path
+                          d="M106.04,59.595 L107.103,59.595 L107.103,58.504 L106.04,58.504 L106.04,59.595 Z M106.036,66.176 L107.112,66.176 L107.112,60.28 L106.036,60.28 L106.036,66.176 Z"
+                          id="Fill-24" fill="white"></path>
+                    <path
+                          d="M76.36,66.274 C75.704,66.274 74.964,66.006 74.397,65.474 L74.35,65.433 L74.835,64.589 L74.887,64.636 C75.429,65.106 75.909,65.294 76.467,65.294 C77.046,65.294 77.387,65.019 77.387,64.567 C77.387,64.095 77.022,63.926 76.342,63.706 C75.628,63.473 74.651,63.132 74.651,61.909 C74.651,60.874 75.496,60.168 76.529,60.168 C77.144,60.168 77.741,60.348 78.27,60.752 L78.321,60.79 L77.884,61.673 L77.832,61.634 C77.36,61.28 76.831,61.149 76.483,61.149 C75.953,61.149 75.635,61.429 75.635,61.798 C75.635,62.263 75.93,62.372 76.808,62.645 C77.774,62.944 78.368,63.5 78.368,64.456 C78.368,65.552 77.539,66.274 76.36,66.274"
+                          id="Fill-25" fill="white"></path>
+                    <path
+                          d="M109.129,64.378 C109.129,64.988 109.572,65.302 110.145,65.302 C111.054,65.302 111.572,64.645 111.572,63.891 L111.572,63.569 C111.331,63.423 110.901,63.321 110.438,63.321 C109.782,63.321 109.129,63.649 109.129,64.378 Z M110,66.309 C109.046,66.309 108.039,65.702 108.039,64.407 C108.039,63.162 108.951,62.321 110.324,62.321 C110.852,62.321 111.293,62.435 111.55,62.544 L111.55,62.461 C111.55,61.843 111.234,61.265 110.375,61.265 C109.758,61.265 109.174,61.487 108.706,61.798 L108.644,61.837 L108.333,60.823 L108.385,60.786 C108.846,60.482 109.608,60.202 110.396,60.202 C111.105,60.202 111.701,60.427 112.073,60.856 C112.433,61.275 112.629,61.845 112.629,62.599 L112.629,66.187 L111.685,66.187 L111.685,65.457 C111.473,65.86 110.852,66.309 110,66.309 Z"
+                          id="Fill-26" fill="white"></path>
+                  </g>
+                </g>
+              </svg>
+            </div><!--logo-->
+            <div class="logo logo--norwich">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120.4496 34.15"><defs><style>.cls-1{fill:#fff;}.cls-3{fill:none;stroke:#fff;stroke-width:0.459px;}</style></defs><title>Norwich-UEA-Logo</title><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M14.049,25.4211c-.311,0-.1-.008-.392-.008-3.613,0-6.324-2.4829-6.324-9.4339V5.7352c0-3.513,1.554-4.846,3.751-4.846V.4722H0v.413c1.927.037,2.623,1.6739,2.623,3.827V14.81c0,7.608,3.642,11.0429,10.245,11.0429h1.18Z"/><path class="cls-2 glint" d="M36.3179,18.3554c-.043-3.813-.903-4.634-4.711-4.67v-.377c3.808-.038,4.668-.8559,4.711-4.6689h.359c.044,3.813.902,4.6289,4.71,4.6659v.38c-3.808.036-4.666.857-4.71,4.67h-.359Z" /><path class="cls-1" d="M15.8815,25.4236c3.447,0,4.963-2.34,4.963-5.647h0l-.003-14.382c0-3.378-1.693-4.502-3.745-4.502l-.001-.422h19.577l.009,5.313-.348-.001C35.75,2.66,34.5315,1.44,30.56,1.44h-.921c-3.735,0-4.47,1.191-4.47,4.535v3.11c0,4.053,1.655,4.22,4.775,4.22v.38c-3.12,0-4.775.34-4.775,4.433v1.331c0,5.015.633,5.348,4.847,5.348,2.492,0,5.529-.638,6.31-4.075l.356.001v5.131h-20.8Z"/><path class="cls-1" d="M43.6468,25.4211c3.441,0,4.311-2.2219,2.751-5.7079l-5.274-13.189,1.524-6.523.29-.001s7.252,17.219,9.051,20.703c1.898,3.677,3.493,4.72,5.067,4.72v.43H43.6468Z"/><path class="cls-1" d="M4.0318,33.1813c-.908,0-1.451-.654-1.451-1.7489V29.1913H3.14v2.2131c0,.8209.374,1.192.903,1.192.527,0,.887-.361.887-1.164V29.1913h.559v2.2071c0,1.1159-.544,1.7829-1.457,1.7829"/><path class="cls-1" d="M8.3673,33.0923h-.546v-1.739c0-.493-.206-.753-.559-.753a.6956.6956,0,0,0-.662.787v1.705h-.546v-2.987h.514v.421a.8641.8641,0,0,1,.801-.483c.606,0,.998.471.998,1.203Z"/><path class="cls-1" d="M9.0673,33.0924h.544v-2.987h-.544Zm.001-3.344h.538v-.553h-.538Z"/><polygon class="cls-1" points="11.572 33.114 11.09 33.114 10.02 30.105 10.597 30.105 11.332 32.343 12.071 30.105 12.639 30.105 11.572 33.114"/><path class="cls-1" d="M14.1026,33.16a1.5842,1.5842,0,0,1-.048-3.1169c.722,0,1.229.6349,1.229,1.58,0,.041,0,.087-.005.156l-.002.064h-1.932a.7959.7959,0,0,0,.768.806.93.93,0,0,0,.729-.375l.022-.025.023.0229.277.276.023.0251-.02.028a1.2465,1.2465,0,0,1-1.064.5589m-.761-1.802h1.386c-.047-.4459-.274-.797-.683-.797a.7921.7921,0,0,0-.703.797"/><path class="cls-1" d="M16.3012,33.0923h-.536v-2.987h.523v.641a.9492.9492,0,0,1,.896-.693c.015,0,.075.002.075.002v.643h-.061c-.492,0-.897.385-.897,1.196Z"/><path class="cls-1" d="M18.443,33.1477a1.4864,1.4864,0,0,1-.995-.4059l-.023-.02.245-.427.027.023a1.16,1.16,0,0,0,.801.3331c.293,0,.465-.1391.465-.3681,0-.2389-.185-.324-.528-.435-.363-.1189-.858-.2909-.858-.911a.8968.8968,0,0,1,.952-.882,1.426,1.426,0,0,1,.882.296l.026.0191-.221.4479-.027-.0209a1.2091,1.2091,0,0,0-.683-.245c-.269,0-.43.1419-.43.328,0,.2359.15.292.594.43a.94.94,0,0,1,.79.9169.9242.9242,0,0,1-1.017.921"/><path class="cls-1" d="M23.5124,34.01a1.3983,1.3983,0,0,1-.71-.253l.182-.5009a1.087,1.087,0,0,0,.497.2089c.291,0,.424-.182.53-.4859l-1.136-2.874h.59l.81,2.1339.663-2.1339h.575l-1.077,3.059c-.207.544-.509.8459-.912.8459"/><path class="cls-1" d="M27.7131,33.1516a1.5707,1.5707,0,1,1,1.38-1.57,1.4757,1.4757,0,0,1-1.38,1.57m0-2.575a.8953.8953,0,0,0-.805,1.005.9153.9153,0,0,0,.815,1.0241.8972.8972,0,0,0,.812-1.0011.9317.9317,0,0,0-.822-1.027"/><path class="cls-1" d="M30.183,33.0893h-.554v-2.447h-.346v-.54h.346v-.194a.8052.8052,0,0,1,.819-.877,1.0846,1.0846,0,0,1,.426.076l.021.009v.541l-.027-.013a.7956.7956,0,0,0-.309-.0729c-.274,0-.381.1539-.381.401v.1359h.712v.534h-.707Z"/><polygon class="cls-1" points="34.683 33.088 32.275 33.088 32.275 29.185 34.659 29.185 34.659 29.749 32.843 29.749 32.843 30.763 34.439 30.763 34.439 31.326 32.843 31.326 32.843 32.529 34.683 32.529 34.683 33.088"/><path class="cls-1" d="M35.9882,33.1414a.9407.9407,0,0,1-.994-.964,1.05,1.05,0,0,1,1.158-1.057,1.663,1.663,0,0,1,.621.1129v-.042a.5517.5517,0,0,0-.595-.6059,1.56,1.56,0,0,0-.846.27l-.03.02-.158-.513.026-.02a1.965,1.965,0,0,1,1.018-.2949,1.0908,1.0908,0,0,1,.85.3319,1.2982,1.2982,0,0,1,.282.8821v1.827h-.478v-.379a.9724.9724,0,0,1-.854.432m-.441-.9781a.46.46,0,0,0,.514.468.6894.6894,0,0,0,.723-.7149v-.163a1.197,1.197,0,0,0-.574-.126c-.333,0-.663.1659-.663.5359"/><path class="cls-1" d="M46.222,33.0874h-.608l-.369-.986H43.621l-.37.986H42.65l1.567-3.897h.438Zm-1.187-1.549-.604-1.536-.603,1.537Z"/><path class="cls-1" d="M50.5572,34.0006a1.8147,1.8147,0,0,1-1.165-.413l-.023-.019.235-.492.028.025a1.4519,1.4519,0,0,0,.952.365c.562,0,.82-.393.82-.913v-.236a.9887.9887,0,0,1-.924.544,1.4269,1.4269,0,0,1,0-2.823,1.0853,1.0853,0,0,1,.954.518v-.456h.485v2.443a1.5742,1.5742,0,0,1-.331,1.057,1.3544,1.3544,0,0,1-1.031.4m-.004-3.416a.7633.7633,0,0,0-.733.855.7924.7924,0,0,0,.733.878.8159.8159,0,0,0,.799-.862.79.79,0,0,0-.799-.871"/><rect class="cls-1" x="52.5293" y="29.1924" width="0.544" height="3.895"/><path class="cls-1" d="M22.1118,33.1457c-.479,0-.771-.306-.771-.86v-1.632H20.99v-.5469h.344l-.001-.8281h.556v.829h.739v.546h-.739v1.488c0,.281.094.447.331.447a.6865.6865,0,0,0,.337-.083l.045-.025-.002.526-.02.01a.871.871,0,0,1-.468.129"/><path class="cls-1" d="M41.1024,33.1363c-.48,0-.771-.306-.771-.859v-1.633h-.352v-.541h.341l-.001-.834h.559v.829h.738v.546h-.738v1.488c0,.28.094.447.331.447a.6731.6731,0,0,0,.337-.083l.046-.025.001.5271-.024.01a.8755.8755,0,0,1-.467.128"/><path class="cls-1" d="M48.8207,33.09h-.546V31.351c0-.4921-.207-.753-.56-.753a.6966.6966,0,0,0-.662.7869V33.09h-.545v-2.987h.513v.4221a.8643.8643,0,0,1,.801-.484c.607,0,.999.4719.999,1.203Z"/><path class="cls-1" d="M19.9813,33.0994h.545v-2.993h-.545Zm.002-3.35h.539v-.553h-.539Z"/><path class="cls-1" d="M53.7183,33.0864h.545v-2.987h-.545Zm.002-3.334h.538v-.554H53.72Z"/><path class="cls-1" d="M38.6842,33.1359a1.4875,1.4875,0,0,1-.994-.4059l-.024-.02.245-.428.027.024a1.16,1.16,0,0,0,.8.333c.294,0,.466-.1391.466-.3681,0-.2389-.185-.3249-.529-.4359-.362-.118-.857-.2911-.857-.91a.8971.8971,0,0,1,.952-.883,1.4249,1.4249,0,0,1,.882.2961l.025.02-.221.4469-.026-.02a1.205,1.205,0,0,0-.684-.245c-.268,0-.429.141-.429.328,0,.2359.149.2909.594.4289a.9411.9411,0,0,1,.79.9181.9241.9241,0,0,1-1.017.9209"/><path class="cls-1" d="M55.726,33.1531a.94.94,0,0,1-.993-.963,1.05,1.05,0,0,1,1.157-1.057,1.6624,1.6624,0,0,1,.621.1131v-.042a.5517.5517,0,0,0-.595-.6061,1.5527,1.5527,0,0,0-.845.27l-.032.02-.157-.514.026-.0189a1.9678,1.9678,0,0,1,1.019-.2951,1.09,1.09,0,0,1,.849.331,1.3009,1.3009,0,0,1,.282.8831v1.8169H56.58v-.3689a.9719.9719,0,0,1-.854.4309m-.441-.978a.46.46,0,0,0,.515.468.69.69,0,0,0,.723-.7149v-.1631a1.2006,1.2006,0,0,0-.575-.125c-.332,0-.663.1661-.663.535"/><path class="cls-1" d="M77.3676,4.7841a.1731.1731,0,0,1,.1748-.1651H77.68c.0918,0,.1553.0645.23.1377L81.4311,8.14H81.44V4.8851a.1739.1739,0,0,1,.1738-.1743h1.1006a.1808.1808,0,0,1,.1748.1743V11.057a.1615.1615,0,0,1-.1748.165h-.0918a.293.293,0,0,1-.2285-.101L78.8266,7.5355h-.01v3.42a.1739.1739,0,0,1-.1738.1743H77.5512a.18.18,0,0,1-.1738-.1743Z"/><path class="cls-1" d="M87.2621,4.619A3.3015,3.3015,0,1,1,83.97,7.93,3.2953,3.2953,0,0,1,87.2621,4.619Zm0,5.1358A1.8343,1.8343,0,1,0,85.4379,7.93,1.8386,1.8386,0,0,0,87.2621,9.7548Z"/><path class="cls-1" d="M91.6459,4.8851a.174.174,0,0,1,.1739-.1743H94.562a1.96,1.96,0,0,1,.6416,3.8242L96.46,10.8641a.1735.1735,0,0,1-.1563.2661h-1.22a.1689.1689,0,0,1-.1465-.0825l-1.22-2.43h-.6328v2.3383a.18.18,0,0,1-.1738.1743H91.82a.174.174,0,0,1-.1739-.1743ZM94.4428,7.453a.7059.7059,0,0,0,.6973-.7339.6745.6745,0,0,0-.6973-.6968H93.0854V7.453Z"/><path class="cls-1" d="M97.1577,4.931a.16.16,0,0,1,.165-.22h1.0732a.1893.1893,0,0,1,.1651.1284l.7881,3.1089h.0371L100.808,4.72a.1739.1739,0,0,1,.1553-.1011h.1651a.156.156,0,0,1,.1562.1011l1.4209,3.228h.0371l.7891-3.1089a.187.187,0,0,1,.165-.1284h1.0723a.16.16,0,0,1,.165.22l-1.7334,6.1626a.1747.1747,0,0,1-.165.1284h-.1465a.1847.1847,0,0,1-.1553-.101l-1.6787-3.7505h-.0273l-1.669,3.7505a.1861.1861,0,0,1-.1562.101h-.1465a.1764.1764,0,0,1-.165-.1284Z"/><path class="cls-1" d="M105.8237,4.8851a.18.18,0,0,1,.1738-.1743h1.1006a.1808.1808,0,0,1,.1748.1743v6.0708a.1808.1808,0,0,1-.1748.1743h-1.1006a.18.18,0,0,1-.1738-.1743Z"/><path class="cls-1" d="M111.6645,4.619a3.0835,3.0835,0,0,1,2.22.853.1711.1711,0,0,1,.0088.2569l-.7148.7427a.16.16,0,0,1-.23,0,1.8068,1.8068,0,0,0-1.2383-.4678,1.827,1.827,0,0,0-1.7969,1.8891A1.8162,1.8162,0,0,0,111.72,9.7548a1.7969,1.7969,0,0,0,1.2285-.4405.1816.1816,0,0,1,.2383.0093l.7158.7612a.1841.1841,0,0,1-.01.2476,3.1452,3.1452,0,0,1-2.2285.89,3.3015,3.3015,0,1,1,0-6.603Z"/><path class="cls-1" d="M114.9477,4.8851a.18.18,0,0,1,.1738-.1743h1.0918a.1739.1739,0,0,1,.1738.1743V7.1962H119.01V4.8851a.1739.1739,0,0,1,.1738-.1743h1.0918a.18.18,0,0,1,.1738.1743v6.0708a.18.18,0,0,1-.1738.1743H119.184a.1739.1739,0,0,1-.1738-.1743V8.5443h-2.6231v2.4116a.1739.1739,0,0,1-.1738.1743h-1.0918a.18.18,0,0,1-.1738-.1743Z"/><path class="cls-1" d="M77.4692,14.0555a.18.18,0,0,1,.1738-.1743h.3486a.174.174,0,0,1,.1739.1743v3.8609a1.7353,1.7353,0,1,0,3.4668.018V14.0555a.1741.1741,0,0,1,.1748-.1743h.3476a.1808.1808,0,0,1,.1748.1743v3.9161a2.43,2.43,0,0,1-4.86,0Z"/><path class="cls-1" d="M84.0248,13.9545a.1732.1732,0,0,1,.1748-.1651h.1377a.1571.1571,0,0,1,.1465.0738l4.0811,5.08h.0185V14.0555a.174.174,0,0,1,.1739-.1743h.3213a.18.18,0,0,1,.1738.1743v6.1719a.172.172,0,0,1-.1738.1651h-.0733a.16.16,0,0,1-.1475-.0733l-4.1542-5.1816h-.0088v4.9887a.1741.1741,0,0,1-.1739.1744H84.2a.1809.1809,0,0,1-.1748-.1744Z"/><path class="cls-1" d="M91.0131,14.0555a.1808.1808,0,0,1,.1748-.1743h.3672a.1806.1806,0,0,1,.1738.1743v6.0708a.1807.1807,0,0,1-.1738.1744h-.3672a.1809.1809,0,0,1-.1748-.1744Z"/><path class="cls-1" d="M94.6176,14.4955H93.0219a.174.174,0,0,1-.1748-.1738v-.2662a.1741.1741,0,0,1,.1748-.1743H96.91a.1741.1741,0,0,1,.1748.1743v.2662a.174.174,0,0,1-.1748.1738H95.3139v5.6308a.18.18,0,0,1-.1738.1744h-.3487a.18.18,0,0,1-.1738-.1744Z"/><path class="cls-1" d="M98.2026,14.0555a.1748.1748,0,0,1,.1748-.1743h3.6133a.174.174,0,0,1,.1738.1743v.2662a.1739.1739,0,0,1-.1738.1738H98.91v2.2378h2.6318a.18.18,0,0,1,.1739.1743v.2661a.1736.1736,0,0,1-.1739.1738H98.91v2.3389h3.0811a.174.174,0,0,1,.1738.1743v.2656a.1741.1741,0,0,1-.1738.1744H98.3774a.1749.1749,0,0,1-.1748-.1744Z"/><path class="cls-1" d="M103.4838,14.0555a.1731.1731,0,0,1,.166-.1743h2.0538a3.21,3.21,0,1,1,0,6.4195H103.65a.1732.1732,0,0,1-.166-.1744Zm2.1377,5.6123a2.4669,2.4669,0,0,0,2.5576-2.5859,2.4649,2.4649,0,0,0-2.5576-2.5771h-1.44v5.163Z"/><path class="cls-1" d="M77.5327,23.2714a.2176.2176,0,0,1,.2207-.22h.2656a.224.224,0,0,1,.2207.22v2.65l2.86-2.7789a.2754.2754,0,0,1,.1748-.0918h.4493a.1766.1766,0,0,1,.11.3208L78.936,26.1327l3.0361,3.0537a.1808.1808,0,0,1-.1562.2842h-.4678a.2514.2514,0,0,1-.1651-.064L78.24,26.389V29.25a.2239.2239,0,0,1-.2207.22h-.2656a.2176.2176,0,0,1-.2207-.22Z"/><path class="cls-1" d="M83.0444,23.2255a.1809.1809,0,0,1,.1748-.1744h.3672a.1807.1807,0,0,1,.1738.1744v6.0708a.1806.1806,0,0,1-.1738.1743h-.3672a.1808.1808,0,0,1-.1748-.1743Z"/><path class="cls-1" d="M85.5209,23.1244a.1723.1723,0,0,1,.1739-.165h.1377a.157.157,0,0,1,.1464.0737l4.0811,5.08h.0186V23.2255a.174.174,0,0,1,.1738-.1744h.3213a.18.18,0,0,1,.1738.1744v6.1718a.1719.1719,0,0,1-.1738.1651H90.5a.1592.1592,0,0,1-.1474-.0733l-4.1543-5.1816H86.19v4.9888a.174.174,0,0,1-.1738.1743h-.3213a.18.18,0,0,1-.1739-.1743Z"/><path class="cls-1" d="M95.4145,22.9594a3.2266,3.2266,0,0,1,2.22.853.1777.1777,0,0,1,.0088.2568c-.082.0825-.1836.1743-.2568.2568-.0821.0918-.1377.0826-.2383-.0092a2.7854,2.7854,0,0,0-1.7422-.7154,2.6428,2.6428,0,0,0,0,5.2823,3.4483,3.4483,0,0,0,1.65-.3853V27.2147H96.0014a.1663.1663,0,0,1-.1738-.165V26.71a.1684.1684,0,0,1,.1738-.1743h1.5869a.1724.1724,0,0,1,.1651.1743v2.1a.2279.2279,0,0,1-.0733.1465,4.5265,4.5265,0,0,1-2.2656.6055,3.3015,3.3015,0,1,1,0-6.603Z"/><path class="cls-1" d="M99.24,23.2255a.1724.1724,0,0,1,.165-.1744h2.0537a3.21,3.21,0,1,1,0,6.4195H99.4047a.1723.1723,0,0,1-.165-.1743Zm2.1367,5.6123a2.5817,2.5817,0,0,0,0-5.1631h-1.44v5.1631Z"/><path class="cls-1" d="M108.9321,22.9594a3.3015,3.3015,0,1,1-3.293,3.3105A3.295,3.295,0,0,1,108.9321,22.9594Zm0,5.9609a2.6595,2.6595,0,1,0-2.65-2.65A2.665,2.665,0,0,0,108.9321,28.92Z"/><path class="cls-1" d="M114.1313,23.0878a.1756.1756,0,0,1,.165-.1284h.1465a.1752.1752,0,0,1,.1563.101l1.8154,5.0528h.0459l1.7881-5.0528a.175.175,0,0,1,.1562-.101h.1465a.1764.1764,0,0,1,.165.1284l1.1827,6.1626c.0283.1284-.0274.22-.1651.22h-.3662a.1874.1874,0,0,1-.165-.1284l-.8164-4.7227h-.0371l-1.6866,4.8418a.1872.1872,0,0,1-.1562.1011h-.1651a.1875.1875,0,0,1-.1562-.1011L114.48,24.62h-.0371l-.7978,4.7227a.178.178,0,0,1-.1651.1284h-.3672c-.1377,0-.1924-.0918-.165-.22Z"/><line class="cls-3" x1="67.2937" x2="67.2937" y2="34.15"/></g></g></svg>
+            </div><!--logo-->
+          </div><!--header-->
+          <div class="body body--frontPage">
+            <div class="heading" data-max-line="2">{{{UEA_heading--fs}}}{{^UEA_heading--fs}}add heading<br>here{{/UEA_heading--fs}}</div><!--heading-->
+          </div><!--body-->
+          <div class="placeholder"></div><!-- placeholder -->
+        </div><!--container fit-->
+
+      </div><!--bleed-->
+
+    </div><!--page-->
+
+
+
+    {{#collection.UEA_internal-pages--fs}}
+    {{#block.UEA_grid-page--fs}}
+    <div class="page individual">
+
+      <div class="bleed">
+
+        <div class="container fit fit--gridPage">
+          <div class="grid">
+            {{#collection.UEA_grid--fs}}
+            {{#block.UEA_top-square-blocks--fs}}
+            <div class="grid__cell grid__cell--intro">
+              {{#collection.UEA_top-square-block--fs}}
+              {{#block.UEA_square-block--fs}}
+              <div class="topSquare">
+                <div class="topSquare__copy" data-char-limit="12">{{{UEA_line-1-copy-2--fs}}}{{^UEA_line-1-copy-2--fs}}Line 1 Copy Input Here{{/UEA_line-1-copy-2--fs}}</div><!--topSquare__copy-->
+                {{#UEA_statistic-line-2-2--fs}}<div class="topSquare__heading"><div class="topSquare__headingInner textFit">{{{UEA_statistic-line-2-2--fs}}}</div></div><!--topSquare__heading-->{{/UEA_statistic-line-2-2--fs}}
+                {{^UEA_statistic-line-2-2--fs}}<img class="topSquare__logo" src="https://files.outfit.io/media_library_items/230130/TEF-Gold-logo.png"><!--topSquare__logo-->{{/UEA_statistic-line-2-2--fs}}
+                <div class="topSquare__copy" data-max-line="3">{{{UEA_line-3-copy-2--fs}}}{{^UEA_line-3-copy-2--fs}}Line 3 Copy Input Here{{/UEA_line-3-copy-2--fs}}</div><!--topSquare__copy-->
+                <div class="topSquare__errorContainer"><div class="topSquare__error">Please make sure there is no more then 1 TEF Logo.</div></div><!--topSquare__error-->
+              </div><!--topSquare-->
+              {{/block.UEA_square-block--fs}}
+              {{/collection.UEA_top-square-block--fs}}
+            </div><!--grid__cell--intro-->
+            {{/block.UEA_top-square-blocks--fs}}
+            {{#block.UEA_accommodation-block--fs}}
+            <div class="grid__cell grid__cell--accommodation">
+              <div class="grid__overlay"></div><!--grid__overlay-->
+              <div class="grid__text" data-max-line="3">{{{UEA_accommodation-copy--fs}}}{{^UEA_accommodation-copy--fs}}Accommodation Text Input Here{{/UEA_accommodation-copy--fs}}</div><!--grid__text-->
+            </div><!--grid__cell--accomodation-->
+            {{/block.UEA_accommodation-block--fs}}
+            {{#block.UEA_transit-block--fs}}
+            <div class="grid__cell grid__cell--transit">
+              <div class="grid__overlay"></div><!--grid__overlay-->
+              <div class="grid__heading grid__heading--transit">2</div><!--grid__heading--transit-->
+              <div class="grid__subheading grid__subheading--transit">hours</div><!--grid__subheading--transit-->
+              <div class="grid__copy grid__copy--transit">to London by train</div><!--grid__copy--transit-->
+            </div><!--grid__cell--transit-->
+            {{/block.UEA_transit-block--fs}}
+            {{#block.UEA_free-text-block--fs}}
+            <div class="grid__cell grid__cell--freeText">
+              <div class="grid__overlay"></div><!--grid__overlay-->
+              <div class="grid__background">
+                <div class="reposition-fix">{{{UEA_background-image--fs}}}</div><!--reposition-fix-->
+              </div><!--grid__background-->
+              <div class="grid__text" data-max-line="3">{{{UEA_copy--fs}}}</div><!--grid__text-->
+              <div class="error__container {{^UEA_background-image--fs}}no-background-image{{/UEA_background-image--fs}} error__container--freeText"><div class="error">Add image here.</div></div>
+            </div><!--grid__cell--freeText-->
+            {{/block.UEA_free-text-block--fs}}
+            {{#block.UEA_text-and-icon-block--fs}}
+            <div class="grid__cell grid__cell--textAndIcon backgroundColour--{{UEA_background-colour-text-and-icon--fs}}{{^UEA_background-colour-text-and-icon--fs}}green{{/UEA_background-colour-text-and-icon--fs}}">
+              {{#UEA_icon--fs}}<img class="grid__icon grid__icon--textAndIcon" src="{{{UEA_icon--fs}}}"><!--grid__icon--textAndIcon-->{{/UEA_icon--fs}}
+              <div class="grid__heading grid__heading--textAndIcon" data-max-line="2">{{{UEA_heading-text-and-icon--fs}}}{{^UEA_heading-text-and-icon--fs}}Heading input here{{/UEA_heading-text-and-icon--fs}}</div><!--grid__heading--textAndIcon-->
+              <div class="grid__copy grid__copy--textAndIcon" data-max-line="2">{{{UEA_copy--fs}}}{{^UEA_copy--fs}}Copy Input Here{{/UEA_copy--fs}}</div><!--grid__copy--textAndIcon-->
+            </div><!--grid__cell--textAndIcon-->
+            {{/block.UEA_text-and-icon-block--fs}}
+            {{#block.UEA_map-block--fs}}
+            <div class="grid__cell grid__cell--map">
+              <div class="grid__cellBakground"></div><!--grid__cellGlint-->
+              <div class="grid__cellGlint"></div><!--grid__cellGlint-->
+              <img class="grid__cellImage" src="https://files.outfit.io/media_library_items/231120/Norwich.svg"><!--grid__cellImage-->
+            </div><!--grid__cell--map-->
+            {{/block.UEA_map-block--fs}}
+            {{#block.UEA_icon-and-statistic-block--fs}}
+            <div class="grid__cell grid__cell--iconAndStatistic backgroundColour--{{UEA_background-colour-icon-and-statistic--fs}}{{^UEA_background-colour-icon-and-statistic--fs}}orange{{/UEA_background-colour-icon-and-statistic--fs}}">
+              <img class="grid__icon grid__icon--iconAndStatistic" src="{{{UEA_icon--fs}}}"><!--grid__icon--iconAndStatistic-->
+              <div class="grid__copy grid__copy--iconAndStatistic" data-max-line="1">{{{UEA_line-1-copy-2--fs}}}{{^UEA_line-1-copy-2--fs}}Line 1 Copy Input Here{{/UEA_line-1-copy-2--fs}}</div><!--grid__copy--iconAndStatistic-->
+              <div class="grid__heading grid__heading--iconAndStatistic">
+                <div class="textFit--2" style="font-size: 0.886rem; line-height: 1.15em;">{{{UEA_statistic-line-2-2--fs}}}{{^UEA_statistic-line-2-2--fs}}xx{{/UEA_statistic-line-2-2--fs}}</div>
+              </div><!--grid__heading--iconAndStatistic-->
+              <div class="grid__copy grid__copy--iconAndStatistic" data-max-line="1">{{{UEA_line-3-copy-2--fs}}}{{^UEA_line-3-copy-2--fs}}Line 3 Copy Input Here{{/UEA_line-3-copy-2--fs}}</div><!--grid__copy--iconAndStatistic-->
+            </div><!--grid__cell--iconAndStatistic-->
+            {{/block.UEA_icon-and-statistic-block--fs}}
+            {{#block.UEA_airport-block--fs}}
+            <div class="grid__cell grid__cell--airport">
+              <div class="grid__overlay"></div><!--grid__overlay-->
+              <img class="grid__icon grid__icon--airport" src="https://files.outfit.io/media_library_items/230158/UEA-icon4.svg"><!--grid__icon-->
+              <div class="grid__text">Close to Norwich<br>International<br>Airport</div><!--grid__text-->
+            </div><!--grid__cell--airport-->
+            {{/block.UEA_airport-block--fs}}
+            {{#block.UEA_statistic-block--fs}}
+            <div class="grid__cell grid__cell--statistic">
+              <div class="grid__background">
+                <div class="reposition-fix">{{{UEA_background-image-statistic--fs}}}</div><!--reposition-fix-->
+              </div><!--grid__background-->
+              <div class="grid__overlay"></div><!--grid__overlay-->
+              <div class="grid__heading grid__heading--statistic">
+                <div class="textFit--3" style="font-size: 1.539rem; line-height: 1.15em;">{{{UEA_statistic--fs}}}{{^UEA_statistic--fs}}xx{{/UEA_statistic--fs}}</div>
+              </div><!--grid__heading-->
+              <div class="grid__subheading grid__subheading--statistic" data-max-line="1">{{{UEA_line-2--fs}}}{{^UEA_line-2--fs}}Line 2 Copy Input Here{{/UEA_line-2--fs}}</div><!--grid__subheading-->
+              <div class="grid__copy" data-max-line="1">{{{UEA_line-3--fs}}}{{^UEA_line-3--fs}}Line 3 Copy Input Here{{/UEA_line-3--fs}}</div><!--grid__copy-->
+              <div class="error__container {{^UEA_background-image-statistic--fs}}no-background-image{{/UEA_background-image-statistic--fs}} error__container--statistic"><div class="error">Add image here.</div></div>
+            </div><!--grid__cell--statistic-->
+            {{/block.UEA_statistic-block--fs}}
+            {{#block.UEA_tall-icon-block--fs}}
+            <div class="grid__cell grid__cell--tallIcon">
+              <div class="grid__background">
+                <div class="reposition-fix">{{{UEA_background-image-tall-icon--fs}}}</div><!--reposition-fix-->
+              </div><!--grid__background-->
+              <div class="grid__overlay"></div><!--grid__overlay-->
+              <img class="grid__icon grid__icon--tallIcon" src="{{{UEA_icon--fs}}}"><!--grid__icon-->
+              <div class="grid__text" data-max-line="2">{{{UEA_copy--fs}}}{{^UEA_copy--fs}}Copy Input Here{{/UEA_copy--fs}}</div><!--grid__text-->
+              <div class="error__container {{^UEA_background-image-tall-icon--fs}}no-background-image{{/UEA_background-image-tall-icon--fs}} error__container--tallIcon"><div class="error">Add image here.</div></div>
+            </div><!--grid__cell--tallIcon-->
+            {{/block.UEA_tall-icon-block--fs}}
+            {{/collection.UEA_grid--fs}}
+          </div><!--grid-->
+        </div><!--container fit-->
+
+      </div><!--bleed-->
+
+    </div><!--page-->
+    {{/block.UEA_grid-page--fs}}
+
+
+
+    {{#block.UEA_info-page--fs}}
+    <div class="page individual">
+
+      <div class="bleed">
+
+        <div class="container fit fit--infoPage">
+          <div class="sectionTop">
+            <div class="content__container" data-max-height="dynamic" data-dynamic-collection-columns>
+              <div data-original-content> 
+                {{#collection.UEA_top-content--fs}}
+                {{#block.UEA_content-block--fs}}
+                <div class="content" data-column-item>
+                  {{#UEA_heading-top-content--fs}}<div class="content__heading" data-max-line="2">{{{UEA_heading-top-content--fs}}}</div><!--content__heading-->{{/UEA_heading-top-content--fs}}
+                  {{#UEA_copy--fs}}<div class="content__copy">{{{UEA_copy--fs}}}</div><!--content__copy-->{{/UEA_copy--fs}}
+                  {{#UEA_url--fs}}<div class="content__url">{{{UEA_url--fs}}}</div><!--content__url-->{{/UEA_url--fs}}
+                </div><!--content-->
+                {{/block.UEA_content-block--fs}}
+                {{#block.UEA_spacer--fs}}
+                <div class="spacer" style="height: {{UEA_spacer-height--fs}}{{^UEA_spacer-height--fs}}25{{/UEA_spacer-height--fs}}px" data-column-item></div><!--spacer-->
+                {{/block.UEA_spacer--fs}}
+                {{#block.UEA_column-break--fs}}
+                <div data-column-break></div>
+                {{/block.UEA_column-break--fs}}
+
+                {{#block.UEAcs_3-column-table-block}}
+                <div class="tableBlock--p3" data-column-item>
+                  {{#spreadsheet.table.length}}
+                  <table class="table js-dynamic-column-table" 
+                         data-dynamic-column-index="{{ UEAcs_dynamic-column }}{{^UEAcs_dynamic-column}}1{{/UEAcs_dynamic-column}}" 
+                         data-dynamic-column-size="{{ UEAcs_dynamic-column-size }}{{^UEAcs_dynamic-column-size}}auto{{/UEAcs_dynamic-column-size}}">
+                    {{#spreadsheet.table}} 
+                    <tr>
+                      <td>{{{UEAcs_col-1}}}</td>
+                      <td>{{{UEAcs_col-2}}}</td>
+                      <td>{{{UEAcs_col-3}}}</td>
+                    </tr>
+                    {{/spreadsheet.table}}
+                  </table>   
+                  {{/spreadsheet.table.length}}
+                </div><!-- end tableBlock--p3 -->
+                {{/block.UEAcs_3-column-table-block}}
+
+                {{#block.UEAcs_4-column-table-block}}
+                <div class="tableBlock--p3" data-column-item>
+                  {{#spreadsheet.table.length}}
+                  <table class="table js-dynamic-column-table" 
+                         data-dynamic-column-index="{{ UEAcs_dynamic-column }}{{^UEAcs_dynamic-column}}1{{/UEAcs_dynamic-column}}" 
+                         data-dynamic-column-size="{{ UEAcs_dynamic-column-size }}{{^UEAcs_dynamic-column-size}}33{{/UEAcs_dynamic-column-size}}">
+                    {{#spreadsheet.table}} 
+                    <tr>
+                      <td>{{{UEAcs_col-1}}}</td>
+                      <td>{{{UEAcs_col-2}}}</td>
+                      <td>{{{UEAcs_col-3}}}</td>
+                      <td>{{{UEAcs_col-4}}}</td>
+                    </tr>
+                    {{/spreadsheet.table}}
+                  </table>   
+                  {{/spreadsheet.table.length}}
+                </div><!-- end tableBlock--p3 -->
+                {{/block.UEAcs_4-column-table-block}}
+
+                {{#block.UEAcs_5-column-table-block}}
+                <div class="tableBlock--p3" data-column-item>
+                  {{#spreadsheet.table.length}}
+                  <table class="table js-dynamic-column-table" 
+                         data-dynamic-column-index="{{ UEAcs_dynamic-column }}{{^UEAcs_dynamic-column}}1{{/UEAcs_dynamic-column}}" 
+                         data-dynamic-column-size="{{ UEAcs_dynamic-column-size }}{{^UEAcs_dynamic-column-size}}33{{/UEAcs_dynamic-column-size}}">
+                    {{#spreadsheet.table}} 
+                    <tr>
+                      <td>{{{UEAcs_col-1}}}</td>
+                      <td>{{{UEAcs_col-2}}}</td>
+                      <td>{{{UEAcs_col-3}}}</td>
+                      <td>{{{UEAcs_col-4}}}</td>
+                      <td>{{{UEAcs_col-5}}}</td>
+                    </tr>
+                    {{/spreadsheet.table}}
+                  </table>   
+                  {{/spreadsheet.table.length}}
+                </div><!-- end tableBlock--p3 -->
+                {{/block.UEAcs_5-column-table-block}}
+
+                {{#block.UEAcs_6-column-table-block}}
+                <div class="tableBlock--p3" data-column-item>
+
+                  <table class="table js-dynamic-column-table" 
+                         data-dynamic-column-index="{{ UEAcs_dynamic-column }}{{^UEAcs_dynamic-column}}1{{/UEAcs_dynamic-column}}" 
+                         data-dynamic-column-size="{{ UEAcs_dynamic-column-size }}{{^UEAcs_dynamic-column-size}}auto{{/UEAcs_dynamic-column-size}}">
+                    {{#spreadsheet.table}} 
+                    <tr>
+                      <td>{{{UEAcs_col-1}}}</td>
+                      <td>{{{UEAcs_col-2}}}</td>
+                      <td>{{{UEAcs_col-3}}}</td>
+                      <td>{{{UEAcs_col-4}}}</td>
+                      <td>{{{UEAcs_col-5}}}</td>
+                      <td>{{{UEAcs_col-6}}}</td>
+                    </tr>
+                    {{/spreadsheet.table}}
+                  </table>   
+
+                </div><!-- end tableBlock--p3 -->
+                {{/block.UEAcs_6-column-table-block}} 
+                {{/collection.UEA_top-content--fs}}
+              </div> <!--data-original-content-->
+              <div data-dynamic-content></div><!--data-dynamic-content-->
+            </div><!--content__container-->
+
+          </div><!--sectionTop-->
+          <div class="sectionBottom">
+            <div class="tableBlock" data-max-height="css">
+              {{#collection.UEA_bottom-content--fs}}
+              {{#block.UEA_content-block--fs}}
+              <div class="tableBlock__heading" data-max-line="2">{{{UEA_heading-content-block--fs}}}</div><!--tableBlock__heading-->
+              {{/block.UEA_content-block--fs}}
+              {{#block.UEA_flexible-content-block--fs}}
+              <div class="tableBlock__content">
+                {{#collection.UEA_flexible-content--fs}}
+                {{#block.UEA_spreadsheet--fs}}
+                <div class="table__container">
+                  <div class="table__heading" data-max-line="1">{{{UEA_heading-table--fs}}}</div><!--table__heading-->
+                  <table class="table 
+                                js-emptyColumnsCheck-table">
+                    {{#spreadsheet.UEA_spreadsheet--fs}}
+                    <tr class="table__row">
+                      <td class="table__cell table__cell--primary">{{{UEA_program-name--fs}}}</td>
+                      <td class="table__cell table__cell--secondary {{^UEA_price-local--fs}}empty-col-2{{/UEA_price-local--fs}}">{{{UEA_price-local--fs}}}</td>
+                      <td class="table__cell table__cell--tertiary {{^UEA_price-international--fs}}empty-col-3{{/UEA_price-international--fs}}">{{{UEA_price-international--fs}}}</td>
+                    </tr>
+                    {{/spreadsheet.UEA_spreadsheet--fs}}
+                  </table><!--table-->
+                </div><!--table__container-->
+                {{/block.UEA_spreadsheet--fs}}
+                {{#block.UEA_copy--fs}}
+                <div class="tableBlock__copy">{{{UEA_copy--fs}}}</div><!--tableBlock__copy-->
+                {{/block.UEA_copy--fs}}
+                {{/collection.UEA_flexible-content--fs}}
+              </div><!--tableBlock__content-->
+              {{/block.UEA_flexible-content-block--fs}}
+              {{#block.UEAcs_3-column-table-block}}
+              <div class="tableBlock--p3" data-column-item>
+                {{#spreadsheet.table.length}}
+                <table class="table js-dynamic-column-table" 
+                       data-dynamic-column-index="{{ UEAcs_dynamic-column }}{{^UEAcs_dynamic-column}}1{{/UEAcs_dynamic-column}}" 
+                       data-dynamic-column-size="{{ UEAcs_dynamic-column-size }}{{^UEAcs_dynamic-column-size}}auto{{/UEAcs_dynamic-column-size}}">
+                  {{#spreadsheet.table}} 
+                  <tr>
+                    <td>{{{UEAcs_col-1}}}</td>
+                    <td>{{{UEAcs_col-2}}}</td>
+                    <td>{{{UEAcs_col-3}}}</td>
+                  </tr>
+                  {{/spreadsheet.table}}
+                </table>   
+                {{/spreadsheet.table.length}}
+              </div><!-- end tableBlock--p3 -->
+              {{/block.UEAcs_3-column-table-block}}
+
+              {{#block.UEAcs_4-column-table-block}}
+              <div class="tableBlock--p3" data-column-item>
+                {{#spreadsheet.table.length}}
+                <table class="table js-dynamic-column-table" 
+                       data-dynamic-column-index="{{ UEAcs_dynamic-column }}{{^UEAcs_dynamic-column}}1{{/UEAcs_dynamic-column}}" 
+                       data-dynamic-column-size="{{ UEAcs_dynamic-column-size }}{{^UEAcs_dynamic-column-size}}33{{/UEAcs_dynamic-column-size}}">
+                  {{#spreadsheet.table}} 
+                  <tr>
+                    <td>{{{UEAcs_col-1}}}</td>
+                    <td>{{{UEAcs_col-2}}}</td>
+                    <td>{{{UEAcs_col-3}}}</td>
+                    <td>{{{UEAcs_col-4}}}</td>
+                  </tr>
+                  {{/spreadsheet.table}}
+                </table>   
+                {{/spreadsheet.table.length}}
+              </div><!-- end tableBlock--p3 -->
+              {{/block.UEAcs_4-column-table-block}}
+
+              {{#block.UEAcs_5-column-table-block}}
+              <div class="tableBlock--p3" data-column-item>
+                {{#spreadsheet.table.length}}
+                <table class="table js-dynamic-column-table" 
+                       data-dynamic-column-index="{{ UEAcs_dynamic-column }}{{^UEAcs_dynamic-column}}1{{/UEAcs_dynamic-column}}" 
+                       data-dynamic-column-size="{{ UEAcs_dynamic-column-size }}{{^UEAcs_dynamic-column-size}}33{{/UEAcs_dynamic-column-size}}">
+                  {{#spreadsheet.table}} 
+                  <tr>
+                    <td>{{{UEAcs_col-1}}}</td>
+                    <td>{{{UEAcs_col-2}}}</td>
+                    <td>{{{UEAcs_col-3}}}</td>
+                    <td>{{{UEAcs_col-4}}}</td>
+                    <td>{{{UEAcs_col-5}}}</td>
+                  </tr>
+                  {{/spreadsheet.table}}
+                </table>   
+                {{/spreadsheet.table.length}}
+              </div><!-- end tableBlock--p3 -->
+              {{/block.UEAcs_5-column-table-block}}
+
+              {{#block.UEAcs_6-column-table-block}}
+              <div class="tableBlock--p3" data-column-item>
+                {{#spreadsheet.table.length}}
+                <table class="table js-dynamic-column-table" 
+                       data-dynamic-column-index="{{ UEAcs_dynamic-column }}{{^UEAcs_dynamic-column}}1{{/UEAcs_dynamic-column}}" 
+                       data-dynamic-column-size="{{ UEAcs_dynamic-column-size }}{{^UEAcs_dynamic-column-size}}auto{{/UEAcs_dynamic-column-size}}">
+                  {{#spreadsheet.table}} 
+                  <tr>
+                    <td>{{{UEAcs_col-1}}}</td>
+                    <td>{{{UEAcs_col-2}}}</td>
+                    <td>{{{UEAcs_col-3}}}</td>
+                    <td>{{{UEAcs_col-4}}}</td>
+                    <td>{{{UEAcs_col-5}}}</td>
+                    <td>{{{UEAcs_col-6}}}</td>
+                  </tr>
+                  {{/spreadsheet.table}}
+                </table>   
+                {{/spreadsheet.table.length}}
+              </div><!-- end tableBlock--p3 -->
+              {{/block.UEAcs_6-column-table-block}} 
+              {{/collection.UEA_bottom-content--fs}}
+            </div><!--tableBlock-->
+          </div><!--sectionBottom-->
+        </div><!--container fit-->
+
+      </div><!--bleed-->
+
+    </div><!--page-->
+    {{/block.UEA_info-page--fs}}
+    {{/collection.UEA_internal-pages--fs}}
+
+    {{#collection.fact-sheet-back-page}}
+    {{#block.back-page}}
+    <div class="page individual">
+      <div class="bleed">
+        <div class="container fit fit--backPage" data-bottom-content-type="{{UEA_bottom-content-type--fs}}">
+          <div class="body body--backPage">
+            <div class="copyBlock copyBlock--copy">
+              <div class="copyBlock__inner" data-max-height="css">
+                <div class="floatBox__line"></div><!--floatLine-->
+                <div class="floatBox floatBox--1"></div><!--floatBox-->
+                <div class="floatBox floatBox--circleSegment floatBox--2"></div><!--floatBox-->
+                <div class="floatBox floatBox--circleSegment floatBox--3"></div><!--floatBox-->
+                <div class="floatBox floatBox--circleSegment floatBox--4"></div><!--floatBox-->
+                <div class="floatBox floatBox--circleSegment floatBox--5"></div><!--floatBox-->                                
+                {{#UEA_heading-copy-block-2--fs}}
+                <div class="copyBlock__heading" data-max-line="1">{{{UEA_heading-copy-block-2--fs}}}</div><!--copyBlock__heading-->
+                {{/UEA_heading-copy-block-2--fs}}
+                {{#UEA_copy--fs}}
+                <div class="text">
+                  {{{UEA_copy--fs}}}
+                </div><!--text-->
+                {{/UEA_copy--fs}}
+              </div><!--copyBlock__inner-->
+            </div><!--copyBlock-->
+            <div class="copyBlock copyBlock--content">
+              <div class="copyBlock__inner" data-max-height="css">
+                <div class="copyBlockTwoColumns u-pos-relative"
+                     dynamic-columns 
+                     min-columns="1" 
+                     max-columns="2" 
+                     column-error="">
+                  <div class="original-content text text--quote">{{{UEA_bottomcontent--fs}}}</div><!--text--quote-->
+                  <div class="column-output"></div>
+                </div><!--src-->
+              </div><!--copyBlock__inner-->
+            </div><!--copyBlock-->
+            <div class="divider"></div><!--divider-->
+            <div class="featureImage">
+              <div class="reposition-fix">{{{UEA_feature-image--fs}}}</div>
+            </div><!--featureImage-->
+          </div><!--body-->
+          <div class="footer">
+            <div class="footer__glint"></div><!--footer__glint-->
+            <div class="footer__inner" data-max-height="dynamic">
+              <div class="contact__container">
+                <div class="contact__heading">contact us</div><!--contact__heading-->
+                <div class="contact__wrapper js-contact-wrapper">
+                  {{#collection.UEA_contacts--fs}}
+                  {{#block.UEA_contact--fs}}
+                  <div class="contact">
+                    {{#UEA-image-contact--fs}}
+                    <div class="contact__image js-contact-image">
+                      <div class="reposition-fix">{{{UEA-image-contact--fs}}}</div><!--reposition-fix-->
+                    </div><!--contact__image-->
+                    {{/UEA-image-contact--fs}}
+                    <div class="contact__content">
+                      {{#UEA-name-contact--fs}}<div class="contact__text contact__text--name" data-max-line="2">{{{UEA-name-contact--fs}}}</div><!--contact__text--name-->{{/UEA-name-contact--fs}}
+                      {{#UEA-position-contact--fs}}<div class="contact__text" data-max-line="2">{{{UEA-position-contact--fs}}}</div><!--contact__text-->{{/UEA-position-contact--fs}}
+                      {{#UEA-email-contact--fs}}<div class="contact__text contact__text--email"><div class="contact__textInner textFit--email" style="line-height: 1.2em;">{{{UEA-email-contact--fs}}}</div></div><!--contact__text-->{{/UEA-email-contact--fs}}
+                      {{#UEA-phone-number-contact--fs}}
+                      <div class="contact__text contact__text--phone"
+                           data-pv-hook="container"
+                           data-pv-original-value="{{{UEA-phone-number-contact--fs}}}">
+                        {{{UEA-phone-number-contact--fs}}}
+                      </div><!--contact__text-->
+                      {{/UEA-phone-number-contact--fs}}
+                    </div><!--contact__content-->
+                  </div><!--contact-->
+                  {{/block.UEA_contact--fs}}
+                  {{/collection.UEA_contacts--fs}}
+                </div><!--contact__wrapper-->
+              </div><!--contact__container-->
+              <div class="social__container" data-max-height="css">
+                {{#collection.UEA_socials--fs}}
+                {{#block.UEA_social--fs}}
+                <div class="social">
+                  {{#UEA-icon-social--fs}}<img class="social__image" src="{{{UEA-icon-social--fs}}}"><!--social__image-->{{/UEA-icon-social--fs}}
+                  {{#UEA-details--fs}}<div class="social__text" data-max-line="1">{{{UEA-details--fs}}}</div><!--social__text-->{{/UEA-details--fs}}
+                </div><!--social-->
+                {{/block.UEA_social--fs}}
+                {{#block.UEA_row-break--fs}}
+                <div class="rowBreak"></div><!--rowBreak-->
+                {{/block.UEA_row-break--fs}}
+                {{/collection.UEA_socials--fs}}
+              </div><!--social__container-->
+            </div><!--footer__inner-->
+          </div><!--footer-->
+        </div><!--container fit-->
+      </div><!--bleed-->
+    </div><!--page-->
+    {{/block.back-page}}
+    {{/collection.fact-sheet-back-page}}
+
+    <div class="page spread-page">
+      <div class="bleed">
+        <div class="container fit" style="padding: 0;">
+
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.showCrop = {{show-crop}}{{^show-crop}}true{{/show-crop}};
+    </script>
+    <script src="js/main.js"></script>   
+    <script src="js/prefixfree.js"></script>
+    <script src="js/char-limit.js"></script>
+    <script src="js/check-export-mode.js"></script>
+    <script src="js/max-line-check.js"></script>
+    <script src="js/max-height-check.js"></script>
+    <script src="js/hide-empty-titles.js"></script>
+    <script src="js/custom-rich-text.js"></script>
+    <script src="js/dynamic-inject.js"></script>
+    <script src="js/text-fit-min.js"></script>
+    <script src="js/fontfaceobserver.js"></script>
+    <script src="js/all-images-loaded-callback.js"></script>
+    <script src="https://outfit-assets-production.s3-accelerate.amazonaws.com/scripts/textfit.0.0.4.min.js" type="text/javascript"></script>
+
+    <script>
+
+      console.clear();
+
+      const dynamicTextColumnsObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          dynamicTextColumns();
+        });
+      });      
+
+      const dynamicTextColumnsSources = document.querySelectorAll('.original-content');
+
+      if ( dynamicTextColumnsSources.length > 0 ) {
+        dynamicTextColumnsSources.forEach(src => {
+          dynamicTextColumnsObserver.observe(src, {
+            attributes: false,
+            characterData: true,
+            childList: true,
+            subtree: true,
+            attributeOldValue: false,
+            characterDataOldValue: true
+          });            
+        });
+      }      
+
+      /*Phone Validator Function*/
+      function phoneValidator() {
+        const containers = document.querySelectorAll('[data-pv-hook="container"]');
+
+        for ( const container of containers ) {
+          const original = container.dataset.pvOriginalValue;
+          let formatted = '';
+
+          if ( original.length === 11 ) {
+            formatted = `${original.slice(0, 4)} ${original.slice(4, 7)} ${original.slice(7, 11)}`;      
+          } else if ( original.length === 13 ) {
+            formatted = `+${original.slice(0, 2)} ${original.slice(2, 6)} ${original.slice(6, 9)} ${original.slice(9, 13)}`;      
+          } else {
+            formatted = original;
+            container.classList.add('overflow');
+          }
+
+          container.innerText = formatted;
+        }
+      }
+
+      //phoneValidator();
+
+      /*Checking if there are more then 1 Top square logos*/
+      function checkNumberOfTopSquareLogos() {
+        const squareLogo = document.querySelectorAll('.topSquare__logo');
+        console.log(squareLogo);
+        const errorContainer = document.querySelector('.topSquare__errorContainer');
+        if (squareLogo.length > 1) {
+          errorContainer.style.display = 'block';
+        }
+      }
+
+      checkNumberOfTopSquareLogos();
+
+      /*Flexible Table Setup*/
+      function getEmptyColumns(table) {
+        const emptyColumns = [];
+        const emptyColumnsCells = [];
+
+        const totalColumns = table.querySelectorAll('tr:first-child td').length; 
+        const rowsLength = table.querySelectorAll('tr').length;
+
+        for (let i = 1; i <= totalColumns; i++) {
+          const columnEmptyCells = table.querySelectorAll(`.empty-col-${i}`);
+
+          if (columnEmptyCells.length === rowsLength)
+            emptyColumns.push(columnEmptyCells);
+        } 
+
+        return emptyColumns;
+      }            
+
+      function emptyColumnsCheck() {
+        const tables = document.querySelectorAll('.js-emptyColumnsCheck-table');
+        for ( const table of tables ) {
+          const emptyColumns = getEmptyColumns(table);
+
+          for ( const emptyColumnCells of emptyColumns ) {
+            for ( const emptyColumnCell of emptyColumnCells ) {
+              emptyColumnCell.style.display = 'none';
+            }
+          }          
+        }
+      }
+
+      emptyColumnsCheck();
+
+      /*Dynamic Columns Setup for Info Page*/
+      function dynamicFlowingContent(flowType) {
+        var res = ""; //This is a variable to collect any errors that are thrown in the functions
+        switch (flowType) {
+          case "col-column":
+            res = dynamicBlockColumns();
+            break;
+          case "text-page":
+            break;
+          case "text-column":
+            break;
+        }
+      }
+
+      function dynamicBlockColumns() {
+        var dynamicColumns = document.querySelectorAll(
+          "[data-dynamic-collection-columns]"
+        );
+
+        dynamicColumns.forEach((dynamicColumn) => {
+          var content = dynamicColumn.querySelector("[data-original-content]");
+          var columnOutput = dynamicColumn.querySelector("[data-dynamic-content]");
+
+          if (content == null || columnOutput == null) return;
+          var columnItems = content.querySelectorAll(
+            "[data-column-item], [data-column-break]"
+          );
+          var columnArr = [];
+          var currentColumnContent = [];
+
+          columnItems.forEach((item) => {
+            if (item.dataset.columnBreak == undefined) {
+              currentColumnContent.push(item);
+            } else {
+              columnArr.push(currentColumnContent);
+              currentColumnContent = [];
+            }
+          });
+
+          if (currentColumnContent.length != 0) {
+            columnArr.push(currentColumnContent);
+          }
+          var output = dynamicColumn.querySelector("[data-dynamic-content]");
+          output.innerHTML = "";
+          columnArr.forEach((column, index) => {
+            var columnDom = document.createElement("div");
+            columnDom.setAttribute("class", "column");
+
+            column.forEach((el) => {
+              columnDom.innerHTML += el.outerHTML;
+            });
+
+            output.appendChild(columnDom);
+          });
+        });
+      }
+      dynamicColumnTableController();
+      dynamicFlowingContent("col-column");
+      /*Dynamic Columns Setup for Info Page*/
+
+      /*Dynamic Columns Setup for Back Page*/
+      function dynamicTextColumns() {
+        var dynamicColumns = document.querySelectorAll("[dynamic-columns]");
+        var htmlTags = "h1, h2, h3, h4, h5, h6, p, ul, ol";
+
+        dynamicColumns.forEach((dynamicColumn) =>{
+          var minColumns = dynamicColumn.getAttribute("min-columns");
+          var maxColumns = dynamicColumn.getAttribute("max-columns");
+          var htmlTagElements = dynamicColumn.querySelector(".original-content").querySelectorAll(htmlTags);
+          var breakPointIndexes = [];          
+
+          htmlTagElements.forEach((el, index) =>{
+            if ( (el.innerHTML).includes('[column-break]') ){
+              breakPointIndexes.push(index);
+            }
+          });
+
+          breakPointIndexes.push(htmlTagElements.length-1);          
+
+          var columnOutput = dynamicColumn.querySelector(".column-output");
+          var columns = [];
+          var currentBreakPoint = 0;
+          var columnCount = breakPointIndexes.length;
+          var htmlElementsArray = Array.prototype.slice.call(htmlTagElements);          
+
+          breakPointIndexes.forEach((breakPoint, j) => {
+            columns.push(htmlElementsArray.slice(currentBreakPoint, breakPoint));
+
+            if(j == breakPointIndexes.length-1){
+              columns[columns.length-1].push(htmlElementsArray[htmlElementsArray.length-1]);
+            } else{
+              currentBreakPoint = breakPoint+1;
+            }
+          });          
+
+          columnOutput.innerHTML = "";
+
+          var columnStructure = document.createElement("div");
+          columnStructure.setAttribute("class", "column-structure");
+
+
+          columns.forEach(column => {
+            var reformedHTML = "";
+            column.forEach(htmlElement => {
+              reformedHTML += htmlElement.outerHTML;
+            });
+
+
+            let columnDiv = document.createElement("div");
+            columnDiv.setAttribute("class", "column");
+            columnDiv.innerHTML = `
+<div class="floatBox__line"></div>
+<div class="floatBox floatBox--1"></div>
+<div class="floatBox floatBox--2 floatBox--circleSegment"></div>
+<div class="floatBox floatBox--3 floatBox--circleSegment"></div>
+<div class="floatBox floatBox--4 floatBox--circleSegment"></div>
+<div class="floatBox floatBox--5 floatBox--circleSegment"></div>
+`;
+            columnDiv.innerHTML += reformedHTML;
+            columnStructure.appendChild(columnDiv);
+          });
+
+          columnOutput.appendChild(columnStructure);
+
+          if (columnCount > maxColumns) {
+            dynamicColumn.classList.add('overflow');
+            dynamicColumn.setAttribute("element-error", "true");
+            dynamicColumn.setAttribute("column-error", "max-column");
+          } else if (columnCount < minColumns) {
+            dynamicColumn.classList.add('overflow');
+            dynamicColumn.setAttribute("element-error", "true");
+            dynamicColumn.setAttribute("column-error", "min-column"); 
+          } else {
+            dynamicColumn.classList.remove('overflow');
+            dynamicColumn.setAttribute("element-error", "false");
+            dynamicColumn.setAttribute("column-error", "");
+          }
+        });
+      }            
+
+      dynamicTextColumns();
+      /*Dynamic Columns Setup for Back Page*/
+
+      function countryLabelCheck() {
+        const containers = document.querySelectorAll('[data-clc-hook="container"]');
+        for ( const container of containers ) {
+          const countryName = container.querySelector('[data-clc-hook="country-name"]');
+          const header = container.parentNode;
+          const countries = {{{account.snippets.country-flag-codes}}};
+
+      if ( !countries.includes('{{UEAis_country-information}}') ) {            
+        container.classList.add('other-country');
+        countryName.innerText = "{{UEAis_country-information}}";
+      } else {
+        container.classList.add("{{ UEAis_country-information }}");
+        countryName.innerText = "{{ UEAis_country-information }}".split("-").join(" ");            
+      }
+
+      // Checking if 'No Flag' is selected
+      if ( '{{UEAis_country-information}}' === 'no-flag' ) {
+        container.classList.add('u-hide');
+        header.classList.add('u-flex-end');
+      }
+
+      // Checking if Country name label has more than 10 characters
+      if ( countryName.innerText.length > 10 ) container.classList.add('u-flex-dir-column');
+      }
+      }
+
+      countryLabelCheck();
+
+      // Tracking text changes and firing text restriction functions (mutationObserver)
+      const overflowObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          maxLineCheck();
+          maxHeightCheck();
+          charLimit();
+          hideEmptyTitles();
+        });
+      });
+
+      const injectObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          injectDynamicContent();
+        });
+      });      
+
+      const injectSources = document.querySelectorAll('[data-target-id]');
+
+      overflowObserver.observe(document.body, {
+        attributes: false,
+        characterData: true,
+        childList: true,
+        subtree: true,
+        attributeOldValue: false,
+        characterDataOldValue: true
+      });
+
+      if ( injectSources.length > 0 ) {
+        injectSources.forEach(src => {
+          injectObserver.observe(src, {
+            attributes: false,
+            characterData: true,
+            childList: true,
+            subtree: true,
+            attributeOldValue: false,
+            characterDataOldValue: true
+          });            
+        });
+      }    
+
+      // Calling text size restriction functions once the fonts are loaded
+      // All external font-families need to be added to 'fonts' array
+      window.addEventListener('load', function(event) {
+        const fonts = ['Brandon Text'];
+        const fontObservers = [];
+
+        fonts.forEach(font => {
+          const obs = new FontFaceObserver(font);
+          fontObservers.push(obs.load())
+        });
+
+        Promise.all(fontObservers).then(() => {
+          injectDynamicContent();
+          hideEmptyTitles();
+          allImagesLoadedCallback();
+          //phoneValidator();
+
+          document.dispatchEvent(new Event('printready'));
+        });
+        adjustTableCellWidth();
+      });      
+
+      checkCrop();
+      checkExport();
+      charLimit();
+
+      setInterval(() => {textFitMin('.textFit', 30)}, 1500);
+      setInterval(() => {textFitMin('.textFit--2', 25)}, 1500);
+      setInterval(() => {textFitMin('.textFit--3', 25)}, 1500);
+      setInterval(() => {textFitMin('.textFit--email', 9)}, 1500);
+
+      setupSpread();
+      function setupSpread(){
+        if({{show-crop}}){
+          let pages = document.querySelectorAll(".page.individual");
+
+          let spreadLayout = document.querySelector(".page.spread-page");
+          if(pages.length % 2 > 0 || pages.length < 1) {
+            console.error("ISSUE");
+          }
+          let pagesRequired = Math.ceil(pages.length / 2);
+          let lastPage = pages[pages.length - 1];
+          let firstPage = pages[0];
+
+          console.log(pagesRequired)
+          for(var i=0;i<pagesRequired-1;i++){
+            spreadClone = spreadLayout.cloneNode(true);
+            document.body.appendChild(spreadClone);
+          }
+
+          let spreadLayouts = document.querySelectorAll(".page.spread-page .container");
+          console.log(spreadLayouts)
+          spreadLayouts.forEach((spreadPage, index) => {
+            spreadPage.style.display = "block";
+            if(index == 0){
+              let spreadContainer = document.createElement("div");
+              spreadContainer.classList.add("spread-container");
+
+              spreadContainer.appendChild(firstPage.querySelector(".container"));
+              spreadContainer.appendChild(lastPage.querySelector(".container"));
+
+              spreadPage.appendChild(spreadContainer);
+            } else {
+              let spreadContainer = document.createElement("div");
+              spreadContainer.classList.add("spread-container");
+
+              let page2 = pages[1];
+              let page3 = pages[2];
+
+              spreadContainer.appendChild(page2.querySelector(".container"));
+              spreadContainer.appendChild(page3.querySelector(".container"));
+              spreadPage.appendChild(spreadContainer);
+            }
+
+          });
+
+          pages.forEach(el=>{el.style.display = "none";});
+          document.querySelectorAll(".spread-page").forEach(el=>{el.style.display = "block"});
+        }
+      }
+
+      function adjustTableCellWidth() {
+        var tableHeaderRows = document.querySelectorAll(".UEA_spreadsheet-block--rj .table__row:first-child");
+        if(tableHeaderRows[0] == undefined) return;
+        var tableHeaderCells = tableHeaderRows[0].querySelectorAll(".table__cell:not(:last-child)");
+        tableHeaderCells.forEach(tableCells => {
+          var distributeWidth = (50/tableHeaderCells.length) + "% !important";
+          tableCells.style.width = distributeWidth;
+        });
+      }
+
+      function dynamicColumnTableController() {
+        const tables = document.querySelectorAll('.js-dynamic-column-table');
+
+        tables.forEach(table => {
+          const dynamicColIndex = table.dataset.dynamicColumnIndex;
+          const dynamicColSize = table.dataset.dynamicColumnSize === 'auto' ? 'auto' : `${table.dataset.dynamicColumnSize}%`;
+
+          console.log({dynamicColIndex, dynamicColSize});
+
+          let el = table.querySelector(`td:nth-child(${dynamicColIndex})`);
+          if(el != null){
+            el.style.width = dynamicColSize;
+          }
+        })            
+      }  
+
+
+      function contactImageController() {
+        const images = document.querySelectorAll('.js-contact-image');
+        const container = document.querySelector('.js-contact-wrapper');
+
+        container.classList.add(`numberOfContactImages--${images.length}`);
+      }
+
+      contactImageController();
+
+    </script>
+
+
+  </body>
+</html>
